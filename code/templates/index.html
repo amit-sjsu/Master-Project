@@ -3,10 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <title>Substance abuse Prediction</title>
-     <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>-->
-     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0/angular-route.min.js"></script>-->
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <style>
+
+    .center_div{
+    margin: 0 auto;
+    width:70% /* value of your choice which suits your alignment */
+}
+    </style>
+    <script>
+        $('form').submit(function (e) {
+  setTimeout(function() {
+    $(this).submit();
+  }, 2000);
+  e.preventDefault();
+}
+    </script>
 </head>
 <body>
-This is just for testing
+
+
+
+<div class="container col-md-4 col-md-offset-4">
+    <br>
+    <br>
+    <br>
+        <form action="/index">
+             <center> <label > Enter User Details</label></center>
+      <hr>
+  <div class="form-group">
+
+
+    <input type="text" required class="form-control"  placeholder="Age">
+  </div>
+  <div class="form-group">
+
+    <input type="text" required class=" form-control"  placeholder="Race">
+  </div>
+   <div class="form-group">
+    <input type="text" class="form-control"   placeholder="Education Level">
+  </div>
+             <div class="form-group">
+    <input type="text" class="form-control"   placeholder="Pregnant? Yes/No">
+  </div>
+             <div class="form-group">
+    <input type="text" class="form-control"   placeholder="Employed? Yes/No">
+  </div>
+             <div class="form-group">
+    <input type="text" class="form-control"   placeholder="Ever Arrested?">
+  </div>
+             <div class="form-group">
+    <input type="text" class="form-control"   placeholder="State">
+  </div>
+             <div class="form-group">
+    <input type="text" class="form-control"   placeholder="Living Arrangement">
+  </div>
+
+  <center><button type="submit" class="btn btn-lg btn-success">Submit</button></center>
+</form>
+
+
+</div>
+
 </body>
 </html>

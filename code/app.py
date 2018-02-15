@@ -60,17 +60,17 @@ def userAgeData():
     print(fl_count_25_29)
     print(ny_count_25_29)
     data={}
-    data["CA"]=[{"age_25_29":{"census_data":census_california_25_29, "drug_data":cal_count_25_29}},
-                {"age_30_34":{"census_data":census_california_30_34, "drug_data":cal_count_30_34}}]
+    data['CA']=[{'age_25_29':{'census_data':census_california_25_29, 'drug_data':cal_count_25_29}},
+                {'age_30_34':{'census_data':census_california_30_34, 'drug_data':cal_count_30_34}}]
 
-    data["AL"] = [{"age_25_29": {"census_data": census_albama_25_29, "drug_data": albama_count_25_29}},
-                  {"age_30_34": {"census_data": census_albama_30_34, "drug_data": albama_count_30_34}}]
+    data['AL'] = [{'age_25_29': {'census_data': census_albama_25_29, 'drug_data': albama_count_25_29}},
+                  {'age_30_34': {'census_data': census_albama_30_34, 'drug_data': albama_count_30_34}}]
 
-    data["FL"] = [{"age_25_29": {"census_data": census_florida_25_29, "drug_data": fl_count_25_29}},
-                  {"age_30_34": {"census_data": census_florida_30_34, "drug_data": fl_count_30_34}}]
+    data['FL'] = [{'age_25_29': {'census_data': census_florida_25_29, 'drug_data': fl_count_25_29}},
+                  {'age_30_34': {'census_data': census_florida_30_34, 'drug_data': fl_count_30_34}}]
 
-    data["NY"] = [{"age_25_29": {"census_data": census_new_york_25_29, "drug_data": ny_count_25_29}},
-                  {"age_30_34": {"census_data": census_new_york_30_34, "drug_data": ny_count_30_34}}]
+    data['NY'] = [{'age_25_29': {'census_data': census_new_york_25_29, 'drug_data': ny_count_25_29}},
+                  {'age_30_34': {'census_data': census_new_york_30_34, 'drug_data': ny_count_30_34}}]
 
     return json.dumps(data);
 
@@ -90,5 +90,4 @@ def charts(chartID = 'chart_ID', chart_type = 'bar', chart_height = 550):
 
 
 if __name__ == '__main__':
-    userAgeData()
     app.run(port=5003);

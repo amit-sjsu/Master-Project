@@ -50,7 +50,17 @@ def userAgeData():
                 ny_count_30_34 = ny_count_30_34+1
             if row[15] == '36' and row[2] == '7':
                 fl_count_30_34 = fl_count_30_34+1
+    workbook1 = xlrd.open_workbook('/Users/anshul/Documents/LinkedIn Profile/AGE/AGE01.xls')
+    worksheet2 = workbook1.sheet_by_name('Sheet1')
+    census_albama = worksheet2.cell(2, 15).value
+    census_california = worksheet2.cell(192, 15).value
+    census_florida = worksheet2.cell(331, 15).value
+    census_new_york = worksheet2.cell(1863, 15).value
 
+    print(census_albama)
+    print(census_california)
+    print(census_florida)
+    print(census_new_york)
     print(census_albama_25_29)
     print(census_california_25_29)
     print(census_florida_25_29)

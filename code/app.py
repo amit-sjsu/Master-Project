@@ -12,7 +12,7 @@ def index():
 
 @app.route('/dd')
 def userAgeData():
-    workbook = xlrd.open_workbook('/Users/anshul/Documents/LinkedIn Profile/AGE/AGE02.xls')
+    workbook = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE02.xls')
     worksheet = workbook.sheet_by_name('Sheet5')
     worksheet1 = workbook.sheet_by_name('Sheet7')
     census_albama_25_29 = worksheet.cell(2, 15).value
@@ -31,7 +31,13 @@ def userAgeData():
     albama_count_30_34 = 0
     ny_count_30_34 = 0
     fl_count_30_34 = 0
-    with open('/Users/anshul/Documents/CMPE295A/ICPSR_35074/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
+
+    cal_count = 0
+    albama_count = 0
+    ny_count = 0
+    fl_count = 0
+
+    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
             if row[15] == '6' and row[2] == '6':
@@ -50,7 +56,18 @@ def userAgeData():
                 ny_count_30_34 = ny_count_30_34+1
             if row[15] == '36' and row[2] == '7':
                 fl_count_30_34 = fl_count_30_34+1
-    workbook1 = xlrd.open_workbook('/Users/anshul/Documents/LinkedIn Profile/AGE/AGE01.xls')
+
+            if row[15] == '6':
+                cal_count = cal_count+1
+            if row[15] == '1':
+                albama_count = albama_count+1
+            if row[15] == '12':
+                fl_count = fl_count+1
+            if row[15] == '36':
+                ny_count = ny_count+1
+
+
+    workbook1 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE01.xls')
     worksheet2 = workbook1.sheet_by_name('Sheet1')
     census_albama = worksheet2.cell(2, 15).value
     census_california = worksheet2.cell(192, 15).value
@@ -69,6 +86,12 @@ def userAgeData():
     print(albama_count_25_29)
     print(fl_count_25_29)
     print(ny_count_25_29)
+
+    print(cal_count)
+    print(albama_count)
+    print(fl_count)
+    print(ny_count)
+
     data={}
     data['CA']=[{'age_25_29':{'census_data':census_california_25_29, 'drug_data':cal_count_25_29}},
                 {'age_30_34':{'census_data':census_california_30_34, 'drug_data':cal_count_30_34}}]

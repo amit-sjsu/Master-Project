@@ -12,7 +12,7 @@ def index():
 
 @app.route('/dd')
 def userAgeData():
-    workbook = xlrd.open_workbook('/Users/anshul/Documents/LinkedIn Profile/AGE/AGE02.xls')
+    workbook = xlrd.open_workbook('/Users/amitpandey/Downloads/AGE/AGE02.xls')
     worksheet = workbook.sheet_by_name('Sheet5')
     worksheet1 = workbook.sheet_by_name('Sheet7')
     census_albama_25_29 = worksheet.cell(2, 15).value
@@ -31,7 +31,7 @@ def userAgeData():
     albama_count_30_34 = 0
     ny_count_30_34 = 0
     fl_count_30_34 = 0
-    with open('/Users/anshul/Documents/CMPE295A/ICPSR_35074/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
+    with open('/Users/amitpandey/Downloads/CMPE 295A DATA/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
             if row[15] == '6' and row[2] == '6':
@@ -59,20 +59,32 @@ def userAgeData():
     print(albama_count_25_29)
     print(fl_count_25_29)
     print(ny_count_25_29)
-    data={}
-    data["CA"]=[{"age_25_29":{"census_data":census_california_25_29, "drug_data":cal_count_25_29}},
-                {"age_30_34":{"census_data":census_california_30_34, "drug_data":cal_count_30_34}}]
 
-    data["AL"] = [{"age_25_29": {"census_data": census_albama_25_29, "drug_data": albama_count_25_29}},
-                  {"age_30_34": {"census_data": census_albama_30_34, "drug_data": albama_count_30_34}}]
 
-    data["FL"] = [{"age_25_29": {"census_data": census_florida_25_29, "drug_data": fl_count_25_29}},
-                  {"age_30_34": {"census_data": census_florida_30_34, "drug_data": fl_count_30_34}}]
+    data = [
+         {'CA': [{'P_DrugAddict': 123},
+                {'P_DA_Age_25_29': 123,
+                'P_DA_Age_30_34': 123}
+           ]
+          },
+         {'AL': [{'P_DrugAddict': 223},
+                {'P_DA_Age_25_29': 223,
+                'P_DA_Age_30_34': 223}
+           ]
+         },
+        {'NY': [{'P_DrugAddict': 323},
+                {'P_DA_Age_25_29': 323,
+                'P_DA_Age_30_34': 323}
+           ]
+         },
+        {'FL': [{'P_DrugAddict': 423},
+                {'P_DA_Age_25_29': 423,
+                'P_DA_Age_30_34': 423}
+           ]
+         }
+    ];
 
-    data["NY"] = [{"age_25_29": {"census_data": census_new_york_25_29, "drug_data": ny_count_25_29}},
-                  {"age_30_34": {"census_data": census_new_york_30_34, "drug_data": ny_count_30_34}}]
-
-    return json.dumps(data);
+    return data;
 
 
 
@@ -86,6 +98,13 @@ def charts(chartID = 'chart_ID', chart_type = 'bar', chart_height = 550):
 	yAxis = {"title": {"text": 'Probability'}}
 	return render_template('charts.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
 
+
+
+@app.route('/addictionProbability',methods=['GET'])
+def getAddictionProbability():
+    data = userAgeData();
+    print (data);
+    return render_template('analysis.html', result=data);
 
 
 

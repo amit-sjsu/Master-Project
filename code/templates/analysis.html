@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Census Data</title>
+</head>
+<body>
+
+ <div id="Test"></div>
+
+
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+
+    <script>
+
+
+         var CA_Total_P_DA=parseInt('{{result[0].CA[0]["P_DrugAddict"]}}');
+         var CA_Age_25_29_P_DA=parseInt('{{result[0].CA[1]["P_DA_Age_25_29"]}}');
+         var CA_Age_30_34_P_DA=parseInt('{{result[0].CA[1]["P_DA_Age_30_34"]}}');
+
+         var AL_Total_P_DA=parseInt('{{result[1].AL[0]["P_DrugAddict"]}}');
+         var AL_Age_25_29_P_DA=parseInt('{{result[1].AL[1]["P_DA_Age_25_29"]}}');
+         var AL_Age_30_34_P_DA=parseInt('{{result[1].AL[1]["P_DA_Age_30_34"]}}');
+
+         var NY_Total_P_DA=parseInt('{{result[2].NY[0]["P_DrugAddict"]}}');
+         var NY_Age_25_29_P_DA=parseInt('{{result[2].NY[1]["P_DA_Age_25_29"]}}');
+         var NY_Age_30_34_P_DA=parseInt('{{result[2].NY[1]["P_DA_Age_30_34"]}}');
+
+         var FL_Total_P_DA=parseInt('{{result[3].FL[0]["P_DrugAddict"]}}');
+         var FL_Age_25_29_P_DA=parseInt('{{result[3].FL[1]["P_DA_Age_25_29"]}}');
+         var FL_Age_30_34_P_DA=parseInt('{{result[3].FL[1]["P_DA_Age_30_34"]}}');
+
+
+
+
+          Highcharts.chart('Test',{
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'State wise drug susceptibility of individual w.r.t census'
+                },
+                subtitle: {
+                    text: 'Click the columns to view age distribution.'
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Risk factor'
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.1f}%'
+                        }
+                    }
+                },
+
+            //    tooltip: {
+            //        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            //        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+            //    },
+
+                series: [{
+                    name: 'State',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'CA',
+                        y: CA_Total_P_DA,
+                        drilldown: 'CA'
+                    }, {
+                        name: 'AL',
+                        y:AL_Total_P_DA,
+                        drilldown: 'AL'
+                    },
+                        {
+                        name: 'NY',
+                        y:NY_Total_P_DA,
+                        drilldown: 'NY'
+                    },
+                            {
+                        name: 'FL',
+                        y:FL_Total_P_DA,
+                        drilldown: 'FL'
+                    }
+                    ]
+                }],
+                drilldown: {
+                    series: [{
+                        name: 'CA',
+                        id: 'CA',
+                        data: [
+                            [
+                                'Age 25 - 29',
+                                 CA_Age_25_29_P_DA
+                            ],
+                            [
+                                'Age 30 - 34',
+                                 CA_Age_30_34_P_DA
+                            ]
+                        ]
+                    }, {
+                        name: 'AL',
+                        id: 'AL',
+                        data: [
+                            [
+                                'Age 25 - 29',
+                                 AL_Age_25_29_P_DA
+
+                            ],
+                            [
+                                'Age 30 - 34',
+                                 AL_Age_30_34_P_DA
+                            ]
+                        ]
+                    },
+                           {
+                        name: 'NY',
+                        id: 'NY',
+                        data: [
+                            [
+                                'Age 25 - 29',
+                                 NY_Age_25_29_P_DA
+
+                            ],
+                            [
+                                'Age 30 - 34',
+                                 NY_Age_30_34_P_DA
+                            ]
+                        ]
+                    },
+                           {
+                        name: 'FL',
+                        id: 'FL',
+                        data: [
+                            [
+                                'Age 25 - 29',
+                                 FL_Age_25_29_P_DA
+
+                            ],
+                            [
+                                'Age 30 - 34',
+                                 FL_Age_30_34_P_DA
+                            ]
+                        ]
+                    }
+                    ]
+                }
+            });
+
+    </script>
+</body>
+</html>

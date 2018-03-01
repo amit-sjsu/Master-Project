@@ -2,9 +2,19 @@ from flask import Flask, send_file, render_template
 import xlrd
 import csv
 import json
+from model import db
+from model import Age
+from model import CreateDB
 
+#import simplejson as json
+from sqlalchemy.exc import IntegrityError
+import os
 
+# initate flask app
 app = Flask(__name__)
+CreateDB()
+db.create_all()
+
 
 @app.route("/")
 def index():
@@ -143,8 +153,9 @@ def userAgeData():
     p_da_fl_25_29 = p_fl_drug_addict * p_fl_25_29_da / p_fl_25_29
     p_da_fl_30_34 = p_fl_drug_addict * p_fl_30_34_da / p_fl_30_34
 
-
-
+    user = Age(age="fl_25_29", age_probability=p_fl_25_29, age_drug_probability=p_fl_30_34_da)
+    db.session.add(user)
+    db.session.commit()
 
 
     print(p_da_ca_25_29)

@@ -36,14 +36,36 @@ class Age(db.Model):
     age = db.Column(db.String(100))
     age_probability = db.Column(db.Float)
     age_drug_probability = db.Column(db.Float)
+    state = db.Column(db.String(100))
 
 
-    def __init__(self, age, age_probability, age_drug_probability):
+    def __init__(self, age, age_probability, age_drug_probability, state):
         self.age = age
         self.age_probability = age_probability
         self.age_drug_probability = age_drug_probability
+        self.state = state
+
+
+class Sex(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    sex = db.Column(db.String(100))
+    sex_probability = db.Column(db.Float)
+    sex_drug_probability = db.Column(db.Float)
+    state = db.Column(db.String(100))
+
+
+    def __init__(self, sex, sex_probability, sex_drug_probability, state):
+        self.sex = sex
+        self.sex_probability = sex_probability
+        self.sex_drug_probability = sex_drug_probability
+        self.state = state
+
 
 
 
 if __name__ == '__main__':
 	manager_obj.run()
+
+
+

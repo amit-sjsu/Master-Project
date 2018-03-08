@@ -84,6 +84,18 @@ def userAgeData():
     census_florida = worksheet2.cell(331, 15).value
     census_new_york = worksheet2.cell(1863, 15).value
 
+    workbook_sex = xlrd.open_workbook('/Users/apoorva/Downloads/SEX01.xls')
+    worksheet_sex_1 = workbook_sex.sheet_by_name('Sheet1')
+    census_sex_male_albama = worksheet_sex_1.cell(2, 7).value
+    census_sex_male_california = worksheet_sex_1.cell(192, 7).value
+    census_sex_male_florida = worksheet_sex_1.cell(331, 7).value
+    census_sex_male_newyork = worksheet_sex_1.cell(1863, 7).value
+    worksheet_sex_2 = workbook_sex.sheet_by_name('Sheet2')
+    census_sex_female_albama = worksheet_sex_2.cell(2, 19).value
+    census_sex_female_california = worksheet_sex_2.cell(192, 19).value
+    census_sex_female_florida = worksheet_sex_2.cell(331, 19).value
+    census_sex_female_newyork = worksheet_sex_2.cell(1863, 19).value
+
     print(census_albama)
     print(census_california)
     print(census_florida)
@@ -124,7 +136,7 @@ def userAgeData():
     albama_count_female = 0
     ny_count_female = 0
     fl_count_female = 0
-    with open('/Users/anshul/Documents/CMPE295A/ICPSR_35074/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
+    with open('/Users/apoorva/Documents/CMPE295A/ICPSR_35074/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
             if row[15] == '6' and row[3] == '1':

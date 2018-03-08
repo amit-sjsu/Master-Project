@@ -115,6 +115,35 @@ def userAgeData():
     data['NY'] = [{'age_25_29': {'census_data': census_new_york_25_29, 'drug_data': ny_count_25_29}},
                   {'age_30_34': {'census_data': census_new_york_30_34, 'drug_data': ny_count_30_34}}]
 
+# Sex data appended
+    cal_count_male = 0
+    albama_count_male = 0
+    ny_count_male = 0
+    fl_count_male = 0
+    cal_count_female = 0
+    albama_count_female = 0
+    ny_count_female = 0
+    fl_count_female = 0
+    with open('/Users/anshul/Documents/CMPE295A/ICPSR_35074/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
+        tsvin = csv.reader(tsvin, delimiter='\t')
+        for row in tsvin:
+            if row[15] == '6' and row[3] == '1':
+                cal_count_male = cal_count_male + 1
+            if row[15] == '1' and row[3] == '1':
+                albama_count_male = albama_count_male + 1
+            if row[15] == '12' and row[3] == '1':
+                fl_count_male = fl_count_male + 1
+            if row[15] == '36' and row[3] == '1':
+                ny_count_male = ny_count_male + 1
+            if row[15] == '6' and row[2] == '2':
+                cal_count_female = cal_count_female + 1
+            if row[15] == '1' and row[2] == '2':
+                albama_count_female = albama_count_female + 1
+            if row[15] == '12' and row[2] == '2':
+                ny_count_female = ny_count_female + 1
+            if row[15] == '36' and row[2] == '2':
+                fl_count_female = fl_count_female + 1
+
     p_ca_drug_addict = cal_count/census_california
     p_ca_25_29_da = cal_count_25_29/cal_count
     p_ca_25_29 = census_california_25_29/census_california

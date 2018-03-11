@@ -449,7 +449,106 @@ def getProbabiltyfromDatabase(personData={},State='',*args):
     return finalProbability
 
 
+@app.route('/dd1')
+def insertUserAgeData():
+    drug_column = '6'
+    census_state_column=192
 
+
+    ##########Drug Data Start
+
+    drug_count_12_14 = 0
+    drug_count_15_17 = 0
+    drug_count_18_20 = 0
+    drug_count_21_24 = 0
+    drug_count_25_29 = 0
+    drug_count_30_34 = 0
+    drug_count_35_39 = 0
+    drug_count_40_44 = 0
+    drug_count_45_49 = 0
+    drug_count_50_54 = 0
+    drug_count_55_100 = 0
+    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
+        tsvin = csv.reader(tsvin, delimiter='\t')
+        for row in tsvin:
+            if row[15] == drug_column and row[2] == '2':
+                drug_count_12_14 = drug_count_12_14+1
+            if row[15] == drug_column and row[2] == '3':
+                drug_count_15_17 = drug_count_15_17 + 1
+            if row[15] == drug_column and row[2] == '4':
+                drug_count_18_20 = drug_count_18_20 + 1
+            if row[15] == drug_column and row[2] == '5':
+                drug_count_21_24 = drug_count_21_24 + 1
+            if row[15] == drug_column and row[2] == '6':
+                drug_count_25_29 = drug_count_25_29 + 1
+            if row[15] == drug_column and row[2] == '7':
+                drug_count_30_34 = drug_count_30_34 + 1
+            if row[15] == drug_column and row[2] == '8':
+                drug_count_35_39 = drug_count_35_39 + 1
+            if row[15] == drug_column and row[2] == '9':
+                drug_count_40_44 = drug_count_40_44 + 1
+            if row[15] == drug_column and row[2] == '10':
+                drug_count_45_49 = drug_count_45_49 + 1
+            if row[15] == drug_column and row[2] == '11':
+                drug_count_50_54 = drug_count_50_54 + 1
+            if row[15] == drug_column and row[2] == '12':
+                drug_count_55_100 = drug_count_55_100 + 1
+
+
+    ##########Drug Data End
+
+    workbook_age_01 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE01.xls')
+    worksheet_age_01_sheet7 = workbook_age_01.sheet_by_name('Sheet7')
+    worksheet_age_01_sheet9 = workbook_age_01.sheet_by_name('Sheet9')
+    census_10_14 = (worksheet_age_01_sheet7.cell(census_state_column, 31).value);
+    census_15_19 = (worksheet_age_01_sheet9.cell(census_state_column, 3).value);
+
+    workbook_age_02 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE02.xls')
+    worksheet_age_02_sheet3 = workbook_age_02.sheet_by_name('Sheet3')
+    worksheet_age_02_sheet5 = workbook_age_02.sheet_by_name('Sheet5')
+    worksheet_age_02_sheet7 = workbook_age_02.sheet_by_name('Sheet7')
+    worksheet_age_02_sheet8 = workbook_age_02.sheet_by_name('Sheet8')
+    worksheet_age_02_sheet10 = workbook_age_02.sheet_by_name('Sheet10')
+    census_20_24 = (worksheet_age_02_sheet3.cell(census_state_column, 35).value)
+    census_25_29 = worksheet_age_02_sheet5.cell(census_state_column, 15).value
+    census_30_34 = worksheet_age_02_sheet7.cell(census_state_column, 11).value
+    census_35_39 = worksheet_age_02_sheet8.cell(census_state_column, 27).value
+    census_40_44 = worksheet_age_02_sheet10.cell(census_state_column, 20).value
+
+    workbook_age_03 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE03.xls')
+    worksheet_age_03_sheet1 = workbook_age_03.sheet_by_name('Sheet1')
+    worksheet_age_03_sheet3 = workbook_age_03.sheet_by_name('Sheet3')
+    worksheet_age_03_sheet5 = workbook_age_03.sheet_by_name('Sheet5')
+    census_45_49 = (worksheet_age_03_sheet1.cell(census_state_column, 35).value)
+    census_50_54 = (worksheet_age_03_sheet3.cell(census_state_column, 31).value)
+    census_55_59 = (worksheet_age_03_sheet5.cell(census_state_column, 11).value)
+
+    age_data = {}
+    age_data["12"]={"census_data": census_10_14/4,"drug_data":drug_count_12_14/3}
+    age_data["13"] = {"census_data": census_10_14 / 4, "drug_data": drug_count_12_14 / 3}
+    age_data["14"] = {"census_data": census_10_14 / 4, "drug_data": drug_count_12_14 / 3}
+    age_data["15"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_15_17 / 3}
+    age_data["16"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_15_17 / 3}
+    age_data["17"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_15_17 / 3}
+    age_data["18"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_18_20 / 3}
+    age_data["19"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_18_20 / 3}
+    age_data["20"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_18_20 / 3}
+    age_data["21"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
+    age_data["22"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
+    age_data["23"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
+    age_data["24"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
+
+    age_data["25_29"] = {"census_data": census_25_29 , "drug_data": drug_count_25_29}
+    age_data["30_34"] = {"census_data": census_30_34, "drug_data": drug_count_30_34}
+    age_data["35_39"] = {"census_data": census_35_39, "drug_data": drug_count_35_39}
+    age_data["40_44"] = {"census_data": census_40_44, "drug_data": drug_count_40_44}
+    age_data["45_49"] = {"census_data": census_45_49, "drug_data": drug_count_45_49}
+    age_data["50_54"] = {"census_data": census_50_54, "drug_data": drug_count_50_54}
+    age_data["55+"] = {"census_data": census_55_59  , "drug_data": drug_count_55_100}
+
+    print(age_data)
+
+    return json.dumps(age_data);
 
 
 

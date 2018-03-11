@@ -276,7 +276,57 @@ def userAgeData():
 
     return json.dumps(data);
 
+def userSexData():
+    cal_count_male = 0
+    albama_count_male = 0
+    ny_count_male = 0
+    fl_count_male = 0
+    cal_count_female = 0
+    albama_count_female = 0
+    ny_count_female = 0
+    fl_count_female = 0
+    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
+        tsvin = csv.reader(tsvin, delimiter='\t')
+        for row in tsvin:
+            if row[15] == '6' and row[3] == '1':
+                cal_count_male = cal_count_male + 1
+            if row[15] == '1' and row[3] == '1':
+                albama_count_male = albama_count_male + 1
+            if row[15] == '12' and row[3] == '1':
+                fl_count_male = fl_count_male + 1
+            if row[15] == '36' and row[3] == '1':
+                ny_count_male = ny_count_male + 1
+            if row[15] == '6' and row[3] == '2':
+                cal_count_female = cal_count_female + 1
+            if row[15] == '1' and row[3] == '2':
+                albama_count_female = albama_count_female + 1
+            if row[15] == '12' and row[3] == '2':
+                ny_count_female = ny_count_female + 1
+            if row[15] == '36' and row[3] == '2':
+                fl_count_female = fl_count_female + 1
 
+    workbook_sex = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/SEX01.xls')
+    worksheet_sex_1 = workbook_sex.sheet_by_name('Sheet1')
+    census_sex_male_albama = worksheet_sex_1.cell(2, 7).value
+    census_sex_male_california = worksheet_sex_1.cell(192, 7).value
+    census_sex_male_florida = worksheet_sex_1.cell(331, 7).value
+    census_sex_male_newyork = worksheet_sex_1.cell(1863, 7).value
+    worksheet_sex_2 = workbook_sex.sheet_by_name('Sheet2')
+    census_sex_female_albama = worksheet_sex_2.cell(2, 19).value
+    census_sex_female_california = worksheet_sex_2.cell(192, 19).value
+    census_sex_female_florida = worksheet_sex_2.cell(331, 19).value
+    census_sex_female_newyork = worksheet_sex_2.cell(1863, 19).value
+
+    sex_ca = {
+        "male": {
+            "census_count": census_sex_male_california,
+            "drug_count": 3233
+        },
+        "female": {
+            "census_count": census_sex_female_california,
+            "drug_count": 2344
+        }
+    }
 
 
 def insertProbabilityToDatabase(stateCensusTotalPopulation = [],state='',age_state_census={} ,sex={}, *args):

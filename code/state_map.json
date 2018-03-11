@@ -1,0 +1,202 @@
+{
+    "ALABAMA": {
+        "drug": 1,
+        "census": 2
+    },
+    "ALASKA": {
+        "drug": 2,
+        "census": 70
+    },
+    "ARIZONA": {
+        "drug": 4,
+        "census": 100
+    },
+    "ARKANSAS": {
+        "drug": 5,
+        "census": 116
+    },
+    "CALIFORNIA": {
+        "drug": 6,
+        "census": 192
+    },
+    "COLORADO": {
+        "drug": 8,
+        "census": 251
+    },
+    "CONNECTICUT": {
+        "drug": 9,
+        "census": 316
+    },
+    "DELAWARE": {
+        "drug": 10,
+        "census": 325
+    },
+    "DISTRICT OF COLUMBIA": {
+        "drug": 11,
+        "census": 329
+    },
+    "FLORIDA": {
+        "drug": 12,
+        "census": 331
+    },
+    "GEORGIA": {
+        "drug": 13,
+        "census": 399
+    },
+    "HAWAII": {
+        "drug": 15,
+        "census": 559
+    },
+    "IDAHO": {
+        "drug": 16,
+        "census": 565
+    },
+    "ILLINOIS": {
+        "drug": 17,
+        "census": 610
+    },
+    "INDIANA": {
+        "drug": 18,
+        "census": 713
+    },
+    "IOWA": {
+        "drug": 19,
+        "census": 806
+    },
+    "KANSAS": {
+        "drug": 20,
+        "census": 906
+    },
+    "KENTUCKY": {
+        "drug": 21,
+        "census": 1012
+    },
+    "LOUISIANA": {
+        "drug": 22,
+        "census": 1133
+    },
+    "MAINE": {
+        "drug": 23,
+        "census": 1198
+    },
+    "MARYLAND": {
+        "drug": 24,
+        "census": 1215
+    },
+    "MASSACHUSETTS": {
+        "drug": 25,
+        "census": 1240
+    },
+    "MICHIGAN": {
+        "drug": 26,
+        "census": 1255
+    },
+    "MINNESOTA": {
+        "drug": 27,
+        "census": 1339
+    },
+    "MISSISSIPPI": {
+        "drug": 28,
+        "census": 1427
+    },
+    "MISSOURI": {
+        "drug": 29,
+        "census": 1510
+    },
+    "MONTANA": {
+        "drug": 30,
+        "census": 1626
+    },
+    "NEBRASKA": {
+        "drug": 31,
+        "census": 1684
+    },
+    "NEVADA": {
+        "drug": 32,
+        "census": 1778
+    },
+    "NEW HAMPSHIRE": {
+        "drug": 33,
+        "census": 1796
+    },
+    "NEW JERSEY": {
+        "drug": 34,
+        "census": 1807
+    },
+    "NEW MEXICO": {
+        "drug": 35,
+        "census": 1829
+    },
+    "NEW YORK": {
+        "drug": 36,
+        "census": 1863
+    },
+    "NORTH CAROLINA": {
+        "drug": 37,
+        "census": 1926
+    },
+    "NORTH DAKOTA": {
+        "drug": 38,
+        "census": 2027
+    },
+    "OHIO": {
+        "drug": 39,
+        "census": 2081
+    },
+    "OKLAHOMA": {
+        "drug": 40,
+        "census": 2170
+    },
+    "OREGON": {
+        "drug": 41,
+        "census": 2248
+    },
+    "PENNSYLVANIA": {
+        "drug": 42,
+        "census": 2285
+    },
+    "RHODE ISLAND": {
+        "drug": 44,
+        "census": 2353
+    },
+    "SOUTH CAROLINA": {
+        "drug": 45,
+        "census": 2359
+    },
+    "SOUTH DAKOTA": {
+        "drug": 46,
+        "census": 2406
+    },
+    "TENNESSEE": {
+        "drug": 47,
+        "census": 2473
+    },
+    "TEXAS": {
+        "drug": 48,
+        "census": 2569
+    },
+    "UTAH": {
+        "drug": 49,
+        "census": 2824
+    },
+    "VERMONT": {
+        "drug": 50,
+        "census": 2854
+    },
+    "VIRGINIA": {
+        "drug": 51,
+        "census": 2869
+    },
+    "WASHINGTON": {
+        "drug": 53,
+        "census": 3006
+    },
+    "WEST VIRGINIA": {
+        "drug": 54,
+        "census": 3046
+    },
+    "WISCONSIN": {
+        "drug": 55,
+        "census": 3102
+    }
+}

@@ -320,11 +320,11 @@ def userSexData():
     sex_ca = {
         "male": {
             "census_count": census_sex_male_california,
-            "drug_count": 3233
+            "drug_count": cal_count_male
         },
         "female": {
             "census_count": census_sex_female_california,
-            "drug_count": 2344
+            "drug_count": cal_count_female
         }
     }
 

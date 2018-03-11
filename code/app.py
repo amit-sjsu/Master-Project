@@ -279,6 +279,52 @@ def userAgeData():
 
 
 
+def insertProbabilityToDatabase(stateCensusTotalPopulation = [],state='',age_state_census={} ,sex={}, *args):
+   # p_drug_addict = stateCensusTotalPopulation[0] / stateCensusTotalPopulation[1];
+   probability=[];
+   if (bool(age_state_census)):
+       probability=calculateProbabilty(age_state_census, stateCensusTotalPopulation);
+       for items in probability:
+           print(items[0], items[1], items[2])
+           # Age(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
+
+   if (bool(sex)):
+       probability = calculateProbabilty(sex, stateCensusTotalPopulation);
+       for items in probability:
+           print (items[0], items[1],items[2])
+           # Sex(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
+
+
+
+def calculateProbabilty(values={},stateCensusTotalPopulation=[]):
+    w=3; h=len(values); i=0;
+    Matrix = [[0 for x in range(w)] for y in range(h)]
+    for k, v in values.items():
+        p_drug = v["drug_count"] / stateCensusTotalPopulation[0];
+        p = v["census_count"] / stateCensusTotalPopulation[1];
+        Matrix[i]=[k,p_drug,p];
+        i=i+1;
+
+    return Matrix
+
+
+def getProbabiltyfromDatabase(personData={},State='',*args):
+    p_drug_addict=123;
+    finalProbability = p_drug_addict;
+
+    for features, values in personData.items():
+        p_drug="abc";
+        p="abc";
+        finalProbability=finalProbability * (p_drug/p);
+
+    return finalProbability
+
+
+
+
+
+
+
 @app.route('/index')
 def charts(chartID = 'chart_ID', chart_type = 'bar', chart_height = 550):
 	chart = {"renderTo": chartID, "type": chart_type, "height": chart_height,}

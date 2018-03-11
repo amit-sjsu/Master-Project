@@ -21,6 +21,74 @@ def index():
     return send_file("templates/index.html")
 
 @app.route('/dd')
+def storeProbability():
+    state_data = json.load(open('state_map.json'))
+    # pprint(state_data)
+    race_json = {}
+    sex_json = {}
+    for attribute, value in state_data.iteritems():
+        race_json[attribute] = raceCalculation(value['drug'], value['census'])  # example usage
+        sex_json[attribute] = raceCalculation(value['drug'], value['census'])  # example usage
+
+
+def raceCalculation(drugColVal, censusColVal):
+    race_workbook = xlrd.open_workbook('/Users/anshul/Documents/CMPE 295B/POP/POP01.xls')
+    worksheet1 = race_workbook.sheet_by_name('POP01F')
+    worksheet2 = race_workbook.sheet_by_name('POP01G')
+    worksheet3 = race_workbook.sheet_by_name('POP01I')
+    worksheet4 = race_workbook.sheet_by_name('POP01J')
+    race_workbook2 = xlrd.open_workbook('/Users/anshul/Documents/CMPE 295B/POP/POP02.xls')
+    worksheet5 = race_workbook2.sheet_by_name('POP02A')
+    census_white = worksheet1.cell(censusColVal, 7).value
+    census_Black_African = worksheet2.cell(censusColVal, 15).value
+    census_American_Indian_Alaska_Native = worksheet2.cell(censusColVal, 38).value
+    census_Asian = worksheet3.cell(censusColVal, 7).value
+    census_Native_Hawaiian_Pacific_Islander = worksheet4.cell(censusColVal, 31).value
+    census_Some_Other_Single_Race = worksheet5.cell(censusColVal, 15).value
+    census_Two_Or_More_Race = worksheet5.cell(censusColVal, 31).value
+
+    drug_white = 0.0
+    drug_Black_African = 0.0
+    drug_American_Indian_Alaska_Native = 0.0
+    drug_Asian = 0.0
+    drug_Native_Hawaiian_Pacific_Islander = 0.0
+    drug_Some_Other_Single_Race = 0.0
+    drug_Two_Or_More_Race = 0.0
+
+    with open('/Users/anshul/Documents/CMPE295A/ICPSR_35074/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
+        tsvin = csv.reader(tsvin, delimiter='\t')
+
+        for row in tsvin:
+            if row[15] == str(drugColVal):
+                if row[4] == '5':
+                    drug_white = drug_white + 1
+                if row[4] == '4':
+                    drug_Black_African = drug_Black_African + 1
+                if row[4] == '2' or row[4] == '1':
+                    drug_American_Indian_Alaska_Native = drug_American_Indian_Alaska_Native + 1
+                if row[4] == '3' or row[4] == '13':
+                    drug_Asian = drug_Asian + 1
+                if row[4] == '23':
+                    drug_Native_Hawaiian_Pacific_Islander = drug_Native_Hawaiian_Pacific_Islander + 1
+                if row[4] == '20':
+                    drug_Some_Other_Single_Race = drug_Some_Other_Single_Race + 1
+                if row[4] == '21':
+                    drug_Two_Or_More_Race = drug_Two_Or_More_Race + 1
+    data = {}
+    data = [
+        {'white': {'census_data': census_white, 'drug_data': drug_white}},
+        {'Black_African': {'census_data': census_Black_African, 'drug_data': drug_Black_African}},
+        {'American_Indian_Alaska_Native': {'census_data': census_American_Indian_Alaska_Native,
+                                           'drug_data': drug_American_Indian_Alaska_Native}},
+        {'Asian': {'census_data': census_Asian, 'drug_data': drug_Asian}},
+        {'Native_Hawaiian_Pacific_Islander': {'census_data': census_Native_Hawaiian_Pacific_Islander,
+                                              'drug_data': drug_Native_Hawaiian_Pacific_Islander}},
+        {'Some_Other_Single_Race': {'census_data': census_Some_Other_Single_Race,
+                                    'drug_data': drug_Some_Other_Single_Race}},
+        {'Two_Or_More_Race': {'census_data': census_Two_Or_More_Race, 'drug_data': drug_Two_Or_More_Race}}
+    ]
+    return data
+
 def userAgeData():
     workbook = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE02.xls')
     worksheet = workbook.sheet_by_name('Sheet5')

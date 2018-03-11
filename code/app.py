@@ -160,13 +160,13 @@ def userAgeData():
                 fl_count_male = fl_count_male + 1
             if row[15] == '36' and row[3] == '1':
                 ny_count_male = ny_count_male + 1
-            if row[15] == '6' and row[2] == '2':
+            if row[15] == '6' and row[3] == '2':
                 cal_count_female = cal_count_female + 1
-            if row[15] == '1' and row[2] == '2':
+            if row[15] == '1' and row[3] == '2':
                 albama_count_female = albama_count_female + 1
-            if row[15] == '12' and row[2] == '2':
+            if row[15] == '12' and row[3] == '2':
                 ny_count_female = ny_count_female + 1
-            if row[15] == '36' and row[2] == '2':
+            if row[15] == '36' and row[3] == '2':
                 fl_count_female = fl_count_female + 1
 
     p_ca_drug_addict = cal_count/census_california

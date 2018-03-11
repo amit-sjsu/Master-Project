@@ -513,7 +513,7 @@ def insertUserAgeData():
     census_25_29 = worksheet_age_02_sheet5.cell(census_state_column, 15).value
     census_30_34 = worksheet_age_02_sheet7.cell(census_state_column, 11).value
     census_35_39 = worksheet_age_02_sheet8.cell(census_state_column, 27).value
-    census_40_44 = worksheet_age_02_sheet10.cell(census_state_column, 20).value
+    census_40_44 = worksheet_age_02_sheet10.cell(census_state_column, 19).value
 
     workbook_age_03 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE03.xls')
     worksheet_age_03_sheet1 = workbook_age_03.sheet_by_name('Sheet1')

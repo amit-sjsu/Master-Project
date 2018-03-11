@@ -329,21 +329,32 @@ def userSexData():
     }
 
 
-def insertProbabilityToDatabase(stateCensusTotalPopulation = [],state='',age_state_census={} ,sex={}, *args):
+def insertProbabilityToDatabase(stateCensusTotalPopulation = [],state='',age_state_census={} ,sex={},race={}, *args):
    # p_drug_addict = stateCensusTotalPopulation[0] / stateCensusTotalPopulation[1];
    probability=[];
+   k=0; Querries=[];
    if (bool(age_state_census)):
        probability=calculateProbabilty(age_state_census, stateCensusTotalPopulation);
        for items in probability:
-           print(items[0], items[1], items[2])
-           # Age(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
+           Querries[k] = Age(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
+           k=k+1;
 
    if (bool(sex)):
        probability = calculateProbabilty(sex, stateCensusTotalPopulation);
        for items in probability:
-           print (items[0], items[1],items[2])
-           # Sex(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
+           Querries[k] = Sex(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
+           k = k + 1;
 
+
+   if (bool(race)):
+       probability = calculateProbabilty(sex, stateCensusTotalPopulation);
+       for items in probability:
+           Querries[k] = Race(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
+           k = k + 1;
+
+   for querry in Querries:
+       db.session.add(querry)
+   db.session.commit()
 
 
 def calculateProbabilty(values={},stateCensusTotalPopulation=[]):

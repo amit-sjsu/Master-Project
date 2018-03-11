@@ -22,9 +22,10 @@ def index():
 
 @app.route('/dd')
 def userAgeData():
-    workbook = xlrd.open_workbook('/Users/anshul/Documents/LinkedIn Profile/AGE/AGE02.xls')
+    workbook = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE02.xls')
     worksheet = workbook.sheet_by_name('Sheet5')
     worksheet1 = workbook.sheet_by_name('Sheet7')
+    worksheet_age_02_sheet3=workbook.sheet_by_name('Sheet3')
     census_albama_25_29 = worksheet.cell(2, 15).value
     census_california_25_29 = worksheet.cell(192, 15).value
     census_florida_25_29 = worksheet.cell(331, 15).value
@@ -33,6 +34,10 @@ def userAgeData():
     census_california_30_34 = worksheet1.cell(192, 11).value
     census_florida_30_34 = worksheet1.cell(331, 11).value
     census_new_york_30_34 = worksheet1.cell(1863, 11).value
+    cal_count_12_14 = 0
+    cal_count_15_17 = 0
+    cal_count_18_20 = 0
+    cal_count_21_24 = 0
     cal_count_25_29 = 0
     albama_count_25_29 = 0
     ny_count_25_29 = 0
@@ -47,9 +52,17 @@ def userAgeData():
     ny_count = 0
     fl_count = 0
 
-    with open('/Users/anshul/Documents/CMPE295A/ICPSR_35074/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
+    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
+            if row[15] == '6' and row[2] == '2':
+                cal_count_12_14 = cal_count_12_14+1
+            if row[15] == '6' and row[2] == '3':
+                cal_count_15_17 = cal_count_15_17+1
+            if row[15] == '6' and row[2] == '4':
+                cal_count_18_20 = cal_count_18_20+1
+            if row[15] == '6' and row[2] == '5':
+                cal_count_21_24 = cal_count_21_24+1
             if row[15] == '6' and row[2] == '6':
                 cal_count_25_29 = cal_count_25_29+1
             if row[15] == '1' and row[2] == '6':
@@ -77,14 +90,14 @@ def userAgeData():
                 ny_count = ny_count+1
 
 
-    workbook1 = xlrd.open_workbook('/Users/anshul/Documents/LinkedIn Profile/AGE/AGE01.xls')
+    workbook1 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE01.xls')
     worksheet2 = workbook1.sheet_by_name('Sheet1')
     census_albama = worksheet2.cell(2, 15).value
     census_california = worksheet2.cell(192, 15).value
     census_florida = worksheet2.cell(331, 15).value
     census_new_york = worksheet2.cell(1863, 15).value
 
-    workbook_sex = xlrd.open_workbook('/Users/apoorva/Downloads/SEX01.xls')
+    workbook_sex = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/SEX01.xls')
     worksheet_sex_1 = workbook_sex.sheet_by_name('Sheet1')
     census_sex_male_albama = worksheet_sex_1.cell(2, 7).value
     census_sex_male_california = worksheet_sex_1.cell(192, 7).value
@@ -136,7 +149,7 @@ def userAgeData():
     albama_count_female = 0
     ny_count_female = 0
     fl_count_female = 0
-    with open('/Users/apoorva/Documents/CMPE295A/ICPSR_35074/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
+    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
             if row[15] == '6' and row[3] == '1':
@@ -207,6 +220,59 @@ def userAgeData():
     print(p_da_ny_30_34)
     print(p_da_fl_25_29)
     print(p_da_fl_30_34)
+
+
+    # Calculate by Age distribution
+    workbook_age_01 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE01.xls')
+    worksheet_age_01_sheet7 = workbook_age_01.sheet_by_name('Sheet7')
+    worksheet_age_01_sheet9 = workbook_age_01.sheet_by_name('Sheet9')
+    census_california_10_14 = (worksheet_age_01_sheet7.cell(192, 31).value);
+    census_california_15_19 = (worksheet_age_01_sheet9.cell(192, 3).value);
+    census_california_20_24 = (worksheet_age_02_sheet3.cell(192, 35).value);
+
+
+    #census_california_25_29 = (worksheet.cell(192, 31).value);
+
+
+    #p_ca_drug_addict = cal_count / census_california
+    p_ca_12_14_da = cal_count_12_14 / cal_count
+    p_ca_15_17_da = cal_count_15_17 / cal_count
+    p_ca_18_20_da = cal_count_18_20 / cal_count
+    p_ca_21_24_da = cal_count_21_24 / cal_count
+
+    print(cal_count_12_14)
+    print(cal_count_15_17)
+    print(cal_count_18_20)
+    print(cal_count_21_24)
+    print(cal_count_25_29)
+
+    p_ca_10_14 = census_california_10_14 / census_california
+    p_ca_15_19 = census_california_15_19 / census_california
+    p_ca_20_24 = census_california_20_24 / census_california
+
+    print(census_california_10_14)
+    print(census_california_15_19)
+    print(census_california_20_24)
+    print(census_california_25_29)
+
+    drugAllAge=[]
+    censusAllAge = []
+
+
+
+    # p_da_ca_12=p_ca_drug_addict*(p_ca_12_14_da/3)/(p_ca_10_14/5)
+    # p_da_ca_13 = p_ca_drug_addict * (p_ca_12_14_da / 3) / (p_ca_10_14 / 5)
+    # p_da_ca_14 = p_ca_drug_addict * (p_ca_12_14_da / 3) / (p_ca_10_14 / 5)
+    # p_da_ca_15 = p_ca_drug_addict * (p_ca_15_17_da / 3) / (p_ca_15_19 / 5)
+    # p_da_ca_16 = p_ca_drug_addict * (p_ca_15_17_da / 3) / (p_ca_15_19 / 5)
+    # p_da_ca_17 = p_ca_drug_addict * (p_ca_15_17_da / 3) / (p_ca_15_19 / 5)
+    # p_da_ca_18 = p_ca_drug_addict * (p_ca_18_20_da / 3) / (p_ca_15_19 / 5)
+    # p_da_ca_19 = p_ca_drug_addict * (p_ca_18_20_da / 3) / (p_ca_15_19 / 5)
+    # p_da_ca_20 = p_ca_drug_addict * (p_ca_18_20_da / 3) / (p_ca_20_24 / 5)
+    # p_da_ca_21 = p_ca_drug_addict * (p_ca_21_24_da / 4) / (p_ca_20_24 / 5)
+    # p_da_ca_22 = p_ca_drug_addict * (p_ca_21_24_da / 4) / (p_ca_20_24 / 5)
+    # p_da_ca_23 = p_ca_drug_addict * (p_ca_21_24_da / 4) / (p_ca_20_24 / 5)
+    # p_da_ca_24 = p_ca_drug_addict * (p_ca_21_24_da / 4) / (p_ca_20_24 / 5)
 
     return json.dumps(data);
 

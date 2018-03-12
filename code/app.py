@@ -29,9 +29,9 @@ def storeProbability():
     age_json = {}
     array_obj=[]
     for attribute, value in state_data.iteritems():
-        #race_json[attribute] = raceCalculation(value['drug'], value['census'])  # example usage
+        race_json[attribute] = raceCalculation(value['drug'], value['census'])  # example usage
         #print(race_json)
-        #sex_json[attribute] = userSexData(value['drug'], value['census'])  # example usage
+        sex_json[attribute] = userSexData(value['drug'], value['census'])  # example usage
         #print(sex_json)
         age_json[attribute],array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
 
@@ -521,9 +521,17 @@ def getUserAgeData(drugColVal, censusColVal):
     worksheet_age_03_sheet1 = workbook_age_03.sheet_by_name('Sheet1')
     worksheet_age_03_sheet3 = workbook_age_03.sheet_by_name('Sheet3')
     worksheet_age_03_sheet5 = workbook_age_03.sheet_by_name('Sheet5')
+    worksheet_age_03_sheet6 = workbook_age_03.sheet_by_name('Sheet6')
+    worksheet_age_03_sheet9 = workbook_age_03.sheet_by_name('Sheet9')
     census_45_49 = (worksheet_age_03_sheet1.cell(census_state_column, 35).value)
     census_50_54 = (worksheet_age_03_sheet3.cell(census_state_column, 31).value)
     census_55_59 = (worksheet_age_03_sheet5.cell(census_state_column, 11).value)
+    census_60_64 = (worksheet_age_03_sheet6.cell(census_state_column, 31).value)
+    census_65_74 = (worksheet_age_03_sheet9.cell(census_state_column, 23).value)
+
+    workbook_age_04 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE04.xls')
+    worksheet_age_04_sheet3 = workbook_age_03.sheet_by_name('Sheet3')
+    census_75_84 = (worksheet_age_04_sheet3.cell(census_state_column, 31).value)
 
     age_data = {}
     age_data["12"]={"census_data": census_10_14/4,"drug_data":drug_count_12_14/3}
@@ -546,9 +554,7 @@ def getUserAgeData(drugColVal, censusColVal):
     age_data["40_44"] = {"census_data": census_40_44, "drug_data": drug_count_40_44}
     age_data["45_49"] = {"census_data": census_45_49, "drug_data": drug_count_45_49}
     age_data["50_54"] = {"census_data": census_50_54, "drug_data": drug_count_50_54}
-    age_data["55+"] = {"census_data": census_55_59  , "drug_data": drug_count_55_100}
-
-    print(age_data)
+    age_data["55+"] = {"census_data": census_55_59+census_60_64+ census_65_74+census_75_84 , "drug_data": drug_count_55_100}
     array_obj = []
     array_obj.append(total_drug_count)
     array_obj.append(total_census_count)

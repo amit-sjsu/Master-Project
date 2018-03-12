@@ -4,6 +4,8 @@ import csv
 import json
 from model import db
 from model import Age
+from model import Sex
+from model import Race
 from model import CreateDB
 
 #import simplejson as json
@@ -29,16 +31,17 @@ def storeProbability():
     age_json = {}
     array_obj=[]
     for attribute, value in state_data.iteritems():
-        race_json[attribute] = raceCalculation(value['drug'], value['census'])  # example usage
+        race_json = raceCalculation(value['drug'], value['census'])  # example usage
         #print(race_json)
-        sex_json[attribute] = userSexData(value['drug'], value['census'])  # example usage
+        sex_json = userSexData(value['drug'], value['census'])  # example usage
         #print(sex_json)
-        age_json[attribute],array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
-
+        age_json,array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
+        insertProbabilityToDatabase(array_obj, attribute, age_json, sex_json, race_json)
 
     print(age_json)
     print(array_obj[0])
     print(array_obj[1])
+    #insertProbabilityToDatabase(array_obj,attribute,age_json,sex_json,race_json)
 
     return ""
 
@@ -89,18 +92,18 @@ def raceCalculation(drugColVal, censusColVal):
                 if row[4] == '21':
                     drug_Two_Or_More_Race = drug_Two_Or_More_Race + 1
     data = {}
-    data = [
-        {'white': {'census_data': census_white, 'drug_data': drug_white}},
-        {'Black_African': {'census_data': census_Black_African, 'drug_data': drug_Black_African}},
-        {'American_Indian_Alaska_Native': {'census_data': census_American_Indian_Alaska_Native,
-                                           'drug_data': drug_American_Indian_Alaska_Native}},
-        {'Asian': {'census_data': census_Asian, 'drug_data': drug_Asian}},
-        {'Native_Hawaiian_Pacific_Islander': {'census_data': census_Native_Hawaiian_Pacific_Islander,
-                                              'drug_data': drug_Native_Hawaiian_Pacific_Islander}},
-        {'Some_Other_Single_Race': {'census_data': census_Some_Other_Single_Race,
-                                    'drug_data': drug_Some_Other_Single_Race}},
-        {'Two_Or_More_Race': {'census_data': census_Two_Or_More_Race, 'drug_data': drug_Two_Or_More_Race}}
-    ]
+    data = {'white': {'census_data': census_white, 'drug_data': drug_white},
+        'Black_African': {'census_data': census_Black_African, 'drug_data': drug_Black_African},
+        'American_Indian_Alaska_Native': {'census_data': census_American_Indian_Alaska_Native,
+                                           'drug_data': drug_American_Indian_Alaska_Native},
+        'Asian': {'census_data': census_Asian, 'drug_data': drug_Asian},
+        'Native_Hawaiian_Pacific_Islander': {'census_data': census_Native_Hawaiian_Pacific_Islander,
+                                              'drug_data': drug_Native_Hawaiian_Pacific_Islander},
+        'Some_Other_Single_Race': {'census_data': census_Some_Other_Single_Race,
+                                    'drug_data': drug_Some_Other_Single_Race},
+        'Two_Or_More_Race': {'census_data': census_Two_Or_More_Race, 'drug_data': drug_Two_Or_More_Race}
+            }
+
     return data
 
 def userAgeData():
@@ -191,36 +194,7 @@ def userAgeData():
     census_sex_female_florida = worksheet_sex_2.cell(331, 19).value
     census_sex_female_newyork = worksheet_sex_2.cell(1863, 19).value
 
-    print(census_albama)
-    print(census_california)
-    print(census_florida)
-    print(census_new_york)
-    print(census_albama_25_29)
-    print(census_california_25_29)
-    print(census_florida_25_29)
-    print(census_new_york_25_29)
-    print(cal_count_25_29)
-    print(albama_count_25_29)
-    print(fl_count_25_29)
-    print(ny_count_25_29)
 
-    print(cal_count)
-    print(albama_count)
-    print(fl_count)
-    print(ny_count)
-
-    data={}
-    data['CA']=[{'age_25_29':{'census_data':census_california_25_29, 'drug_data':cal_count_25_29}},
-                {'age_30_34':{'census_data':census_california_30_34, 'drug_data':cal_count_30_34}}]
-
-    data['AL'] = [{'age_25_29': {'census_data': census_albama_25_29, 'drug_data': albama_count_25_29}},
-                  {'age_30_34': {'census_data': census_albama_30_34, 'drug_data': albama_count_30_34}}]
-
-    data['FL'] = [{'age_25_29': {'census_data': census_florida_25_29, 'drug_data': fl_count_25_29}},
-                  {'age_30_34': {'census_data': census_florida_30_34, 'drug_data': fl_count_30_34}}]
-
-    data['NY'] = [{'age_25_29': {'census_data': census_new_york_25_29, 'drug_data': ny_count_25_29}},
-                  {'age_30_34': {'census_data': census_new_york_30_34, 'drug_data': ny_count_30_34}}]
 
 # Sex data appended
     cal_count_male = 0
@@ -251,57 +225,6 @@ def userAgeData():
             if row[15] == '36' and row[3] == '2':
                 fl_count_female = fl_count_female + 1
 
-    p_ca_drug_addict = cal_count/census_california
-    p_ca_25_29_da = cal_count_25_29/cal_count
-    p_ca_25_29 = census_california_25_29/census_california
-
-    p_ca_30_34_da = cal_count_30_34/cal_count
-    p_ca_30_34 = census_california_30_34/census_california
-
-    p_da_ca_25_29 = p_ca_drug_addict * p_ca_25_29_da / p_ca_25_29
-    p_da_ca_30_34 = p_ca_drug_addict * p_ca_30_34_da / p_ca_30_34
-
-    p_al_drug_addict = albama_count/census_albama
-    p_al_25_29_da = albama_count_25_29/albama_count
-    p_al_25_29 = census_albama_25_29/census_albama
-    p_al_30_34_da = albama_count_30_34/albama_count
-    p_al_30_34 = census_albama_30_34/census_albama
-
-    p_da_al_25_29 = p_al_drug_addict * p_al_25_29_da / p_al_25_29
-    p_da_al_30_34 = p_al_drug_addict * p_al_30_34_da / p_al_30_34
-
-
-    p_ny_drug_addict = ny_count/census_new_york
-    p_ny_25_29_da = ny_count_25_29/ny_count
-    p_ny_25_29 = census_new_york_25_29/census_new_york
-    p_ny_30_34_da = ny_count_30_34/ny_count
-    p_ny_30_34 = census_new_york_30_34/census_new_york
-
-    p_da_ny_25_29 = p_ny_drug_addict * p_ny_25_29_da / p_ny_25_29
-    p_da_ny_30_34 = p_ny_drug_addict * p_ny_30_34_da / p_ny_30_34
-
-    p_fl_drug_addict = fl_count/census_florida
-    p_fl_25_29_da = fl_count_25_29/fl_count
-    p_fl_25_29 = census_florida_25_29/census_florida
-    p_fl_30_34_da = fl_count_30_34/fl_count
-    p_fl_30_34 = census_florida_30_34/census_florida
-
-    p_da_fl_25_29 = p_fl_drug_addict * p_fl_25_29_da / p_fl_25_29
-    p_da_fl_30_34 = p_fl_drug_addict * p_fl_30_34_da / p_fl_30_34
-
-    user = Age(age="fl_25_29", age_probability=p_fl_25_29, age_drug_probability=p_fl_30_34_da)
-    db.session.add(user)
-    db.session.commit()
-
-
-    print(p_da_ca_25_29)
-    print(p_da_ca_30_34)
-    print(p_da_al_25_29)
-    print(p_da_al_30_34)
-    print(p_da_ny_25_29)
-    print(p_da_ny_30_34)
-    print(p_da_fl_25_29)
-    print(p_da_fl_30_34)
 
 
     # Calculate by Age distribution
@@ -313,50 +236,9 @@ def userAgeData():
     census_california_20_24 = (worksheet_age_02_sheet3.cell(192, 35).value);
 
 
-    #census_california_25_29 = (worksheet.cell(192, 31).value);
 
 
-    #p_ca_drug_addict = cal_count / census_california
-    p_ca_12_14_da = cal_count_12_14 / cal_count
-    p_ca_15_17_da = cal_count_15_17 / cal_count
-    p_ca_18_20_da = cal_count_18_20 / cal_count
-    p_ca_21_24_da = cal_count_21_24 / cal_count
-
-    print(cal_count_12_14)
-    print(cal_count_15_17)
-    print(cal_count_18_20)
-    print(cal_count_21_24)
-    print(cal_count_25_29)
-
-    p_ca_10_14 = census_california_10_14 / census_california
-    p_ca_15_19 = census_california_15_19 / census_california
-    p_ca_20_24 = census_california_20_24 / census_california
-
-    print(census_california_10_14)
-    print(census_california_15_19)
-    print(census_california_20_24)
-    print(census_california_25_29)
-
-    drugAllAge=[]
-    censusAllAge = []
-
-
-
-    # p_da_ca_12=p_ca_drug_addict*(p_ca_12_14_da/3)/(p_ca_10_14/5)
-    # p_da_ca_13 = p_ca_drug_addict * (p_ca_12_14_da / 3) / (p_ca_10_14 / 5)
-    # p_da_ca_14 = p_ca_drug_addict * (p_ca_12_14_da / 3) / (p_ca_10_14 / 5)
-    # p_da_ca_15 = p_ca_drug_addict * (p_ca_15_17_da / 3) / (p_ca_15_19 / 5)
-    # p_da_ca_16 = p_ca_drug_addict * (p_ca_15_17_da / 3) / (p_ca_15_19 / 5)
-    # p_da_ca_17 = p_ca_drug_addict * (p_ca_15_17_da / 3) / (p_ca_15_19 / 5)
-    # p_da_ca_18 = p_ca_drug_addict * (p_ca_18_20_da / 3) / (p_ca_15_19 / 5)
-    # p_da_ca_19 = p_ca_drug_addict * (p_ca_18_20_da / 3) / (p_ca_15_19 / 5)
-    # p_da_ca_20 = p_ca_drug_addict * (p_ca_18_20_da / 3) / (p_ca_20_24 / 5)
-    # p_da_ca_21 = p_ca_drug_addict * (p_ca_21_24_da / 4) / (p_ca_20_24 / 5)
-    # p_da_ca_22 = p_ca_drug_addict * (p_ca_21_24_da / 4) / (p_ca_20_24 / 5)
-    # p_da_ca_23 = p_ca_drug_addict * (p_ca_21_24_da / 4) / (p_ca_20_24 / 5)
-    # p_da_ca_24 = p_ca_drug_addict * (p_ca_21_24_da / 4) / (p_ca_20_24 / 5)
-
-    return json.dumps(data);
+    # return json.dumps(data);
 
 def userSexData(drugColVal, censusColVal):
     drug_male = 0.0
@@ -379,43 +261,50 @@ def userSexData(drugColVal, censusColVal):
     worksheet_sex_2 = workbook_sex.sheet_by_name('Sheet2')
     census_sex_female = worksheet_sex_2.cell(censusColVal, 19).value
 
-    sex_data = [
-        {
+    sex_data = {
         "male": {
-            "census_count": census_sex_male,
-            "drug_count": drug_male
+            "census_data": census_sex_male,
+            "drug_data": drug_male
         },
         "female": {
-            "census_count": census_sex_female,
-            "drug_count": drug_female
+            "census_data": census_sex_female,
+            "drug_data": drug_female
         }
     }
-        ]
+
     return sex_data
 
 
 def insertProbabilityToDatabase(stateCensusTotalPopulation = [],state='',age_state_census={} ,sex={},race={}, *args):
    # p_drug_addict = stateCensusTotalPopulation[0] / stateCensusTotalPopulation[1];
+
+   # print sex
+   # print "==========>"
+   # print race
    probability=[];
-   k=0; Querries=[];
+   k=0;
+   Querries=[];
    if (bool(age_state_census)):
        probability=calculateProbabilty(age_state_census, stateCensusTotalPopulation);
+       print probability
        for items in probability:
-           Querries[k] = Age(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
-           k=k+1;
+           print items
+           print items[0], round(float(items[2]), 2),round(float(items[1]), 2)
+           Querries.append(Age(age=items[0] , age_probability=round(float(items[2]), 2), age_drug_probability=round(float(items[1]), 2) , state=state));
+
 
    if (bool(sex)):
        probability = calculateProbabilty(sex, stateCensusTotalPopulation);
        for items in probability:
-           Querries[k] = Sex(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
-           k = k + 1;
+           Querries.append(Sex(sex=items[0], sex_probability=round(float(items[2]), 2), sex_drug_probability=round(float(items[1]), 2), state=state));
+
 
 
    if (bool(race)):
-       probability = calculateProbabilty(sex, stateCensusTotalPopulation);
+       probability = calculateProbabilty(race, stateCensusTotalPopulation);
        for items in probability:
-           Querries[k] = Race(age=items[0], age_probability=items[2], age_drug_probability=items[1], state=state);
-           k = k + 1;
+           Querries.append(Race(race=items[0], race_probability=round(float(items[2]), 2), race_drug_probability=round(float(items[1]), 2), state=state));
+
 
    for querry in Querries:
        db.session.add(querry)
@@ -423,14 +312,25 @@ def insertProbabilityToDatabase(stateCensusTotalPopulation = [],state='',age_sta
 
 
 def calculateProbabilty(values={},stateCensusTotalPopulation=[]):
-    w=3; h=len(values); i=0;
+    # value = json.loads(values)
+    # print vaule, stateCensusTotalPopulation
+    h=0;  w=3; i=0;
+    for k,v in values.items():
+        h=h+1;
+
+    # print h
     Matrix = [[0 for x in range(w)] for y in range(h)]
+
+    # print Matrix
+
     for k, v in values.items():
-        p_drug = v["drug_count"] / stateCensusTotalPopulation[0];
-        p = v["census_count"] / stateCensusTotalPopulation[1];
-        Matrix[i]=[k,p_drug,p];
+        p_drug = v["drug_data"] / stateCensusTotalPopulation[0];
+        p = v["census_data"] / stateCensusTotalPopulation[1];
+        Matrix[i]=([k,p_drug,p]);
         i=i+1;
 
+    # print "===========>111111"
+    # print Matrix
     return Matrix
 
 
@@ -558,19 +458,7 @@ def getUserAgeData(drugColVal, censusColVal):
     array_obj = []
     array_obj.append(total_drug_count)
     array_obj.append(total_census_count)
-    return json.dumps(age_data), array_obj;
-
-
-
-
-@app.route('/index')
-def charts(chartID = 'chart_ID', chart_type = 'bar', chart_height = 550):
-	chart = {"renderTo": chartID, "type": chart_type, "height": chart_height,}
-	series = [{"name": 'Alcohol', "data": [25]}, {"name": 'Marijuana', "data": [30]}, {"name": 'Cocaine', "data": [56]}]
-	title = {"text": 'Substance Abuse Predictions'}
-	xAxis = {"categories": ['Substances']}
-	yAxis = {"title": {"text": 'Probability'}}
-	return render_template('charts.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
+    return age_data, array_obj;
 
 
 

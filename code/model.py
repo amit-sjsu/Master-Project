@@ -9,7 +9,7 @@ from flask_migrate import Migrate, MigrateCommand
 app = Flask(__name__)
 
 DATABASE = 'drug_addict'
-PASSWORD = 'password'
+PASSWORD = 'root'
 USER = 'root'
 HOSTNAME = 'localhost'
 
@@ -61,6 +61,32 @@ class Sex(db.Model):
         self.sex_drug_probability = sex_drug_probability
         self.state = state
 
+
+
+class Race(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    race = db.Column(db.String(100))
+    race_probability = db.Column(db.Float)
+    race_drug_probability = db.Column(db.Float)
+    state = db.Column(db.String(100))
+
+    def __init__(self, race, race_probability, race_drug_probability, state):
+        self.race = race
+        self.race_probability = race_probability
+        self.race_drug_probability = race_drug_probability
+        self.state = state
+
+
+class State(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    state = db.Column(db.String(100))
+    drug_count = db.Column(db.Float)
+    census_count = db.Column(db.Float)
+
+    def __init__(self, state, drug_count, census_count):
+        self.state = state
+        self.drug_count = drug_count
+        self.census_count = census_count
 
 
 

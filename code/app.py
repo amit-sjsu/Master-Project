@@ -22,27 +22,36 @@ def index():
 
 @app.route('/dd')
 def storeProbability():
-    state_data = json.load(open('state_map.json'))
+    state_data = json.load(open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/state_map.json'))
     # pprint(state_data)
     race_json = {}
     sex_json = {}
     age_json = {}
+    array_obj=[]
     for attribute, value in state_data.iteritems():
-        race_json[attribute] = raceCalculation(value['drug'], value['census'])  # example usage
-        sex_json[attribute] = userSexData(value['drug'], value['census'])  # example usage
-        age_json[attribute] = getUserAgeData(value['drug'], value['census'])  # example usage
+        #race_json[attribute] = raceCalculation(value['drug'], value['census'])  # example usage
+        #print(race_json)
+        #sex_json[attribute] = userSexData(value['drug'], value['census'])  # example usage
+        #print(sex_json)
+        age_json[attribute],array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
 
+
+    print(age_json)
+    print(array_obj[0])
+    print(array_obj[1])
+
+    return ""
 
 
 
 
 def raceCalculation(drugColVal, censusColVal):
-    race_workbook = xlrd.open_workbook('/Users/anshul/Documents/CMPE 295B/POP/POP01.xls')
+    race_workbook = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/POP01.xls')
     worksheet1 = race_workbook.sheet_by_name('POP01F')
     worksheet2 = race_workbook.sheet_by_name('POP01G')
     worksheet3 = race_workbook.sheet_by_name('POP01I')
     worksheet4 = race_workbook.sheet_by_name('POP01J')
-    race_workbook2 = xlrd.open_workbook('/Users/anshul/Documents/CMPE 295B/POP/POP02.xls')
+    race_workbook2 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/POP02.xls')
     worksheet5 = race_workbook2.sheet_by_name('POP02A')
     census_white = worksheet1.cell(censusColVal, 7).value
     census_Black_African = worksheet2.cell(censusColVal, 15).value
@@ -60,7 +69,7 @@ def raceCalculation(drugColVal, censusColVal):
     drug_Some_Other_Single_Race = 0.0
     drug_Two_Or_More_Race = 0.0
 
-    with open('/Users/anshul/Documents/CMPE295A/ICPSR_35074/DS0001/35074-0001-Data.tsv', 'r') as tsvin:
+    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
 
         for row in tsvin:
@@ -456,6 +465,7 @@ def getUserAgeData(drugColVal, censusColVal):
     drug_count_45_49 = 0
     drug_count_50_54 = 0
     drug_count_55_100 = 0
+    total_drug_count = 0.0
     with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
@@ -481,15 +491,19 @@ def getUserAgeData(drugColVal, censusColVal):
                 drug_count_50_54 = drug_count_50_54 + 1
             if row[15] == drug_column and row[2] == '12':
                 drug_count_55_100 = drug_count_55_100 + 1
+            if row[15] == drug_column:
+                total_drug_count = total_drug_count+1
 
 
     ##########Drug Data End
 
     workbook_age_01 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE01.xls')
+    worksheet_age_01_sheet1 = workbook_age_01.sheet_by_name('Sheet1')
     worksheet_age_01_sheet7 = workbook_age_01.sheet_by_name('Sheet7')
     worksheet_age_01_sheet9 = workbook_age_01.sheet_by_name('Sheet9')
     census_10_14 = (worksheet_age_01_sheet7.cell(census_state_column, 31).value);
     census_15_19 = (worksheet_age_01_sheet9.cell(census_state_column, 3).value);
+    total_census_count = worksheet_age_01_sheet1.cell(census_state_column, 15).value
 
     workbook_age_02 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE02.xls')
     worksheet_age_02_sheet3 = workbook_age_02.sheet_by_name('Sheet3')
@@ -535,8 +549,10 @@ def getUserAgeData(drugColVal, censusColVal):
     age_data["55+"] = {"census_data": census_55_59  , "drug_data": drug_count_55_100}
 
     print(age_data)
-
-    return json.dumps(age_data);
+    array_obj = []
+    array_obj.append(total_drug_count)
+    array_obj.append(total_census_count)
+    return json.dumps(age_data), array_obj;
 
 
 

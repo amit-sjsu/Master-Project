@@ -26,9 +26,14 @@ def storeProbability():
     # pprint(state_data)
     race_json = {}
     sex_json = {}
+    age_json = {}
     for attribute, value in state_data.iteritems():
         race_json[attribute] = raceCalculation(value['drug'], value['census'])  # example usage
         sex_json[attribute] = userSexData(value['drug'], value['census'])  # example usage
+        age_json[attribute] = getUserAgeData(value['drug'], value['census'])  # example usage
+
+
+
 
 
 def raceCalculation(drugColVal, censusColVal):
@@ -433,9 +438,9 @@ def getProbabiltyfromDatabase(personData={},State='',*args):
 
 
 @app.route('/dd1')
-def insertUserAgeData():
-    drug_column = '6'
-    census_state_column=192
+def getUserAgeData(drugColVal, censusColVal):
+    drug_column = str(drugColVal)
+    census_state_column=censusColVal
 
 
     ##########Drug Data Start

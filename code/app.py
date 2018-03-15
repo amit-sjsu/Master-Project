@@ -16,7 +16,7 @@ from sqlalchemy.exc import IntegrityError
 import os
 from flask import request
 
-# initate flask app
+# initate flask app;
 app = Flask(__name__)
 app.config.from_object(config)
 CreateDB()

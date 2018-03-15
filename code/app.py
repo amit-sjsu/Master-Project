@@ -7,13 +7,15 @@ from model import Age
 from model import Sex
 from model import Race
 from model import CreateDB
-
+import config
+from config import GetConfigDataApoorva as config_data
 #import simplejson as json
 from sqlalchemy.exc import IntegrityError
 import os
 
 # initate flask app
 app = Flask(__name__)
+app.config.from_object(config)
 CreateDB()
 db.create_all()
 
@@ -24,21 +26,23 @@ def index():
 
 @app.route('/dd')
 def storeProbability():
-    state_data = json.load(open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/state_map.json'))
+    state_data = json.load(open('state_map.json')) # Contains references columns in data sets
     # pprint(state_data)
-    race_json = {}
-    sex_json = {}
-    age_json = {}
+    # race_json = {}
+    # sex_json = {}
+    # age_json = {}
     array_obj=[]
-    for attribute, value in state_data.iteritems():
-        race_json = raceCalculation(value['drug'], value['census'])  # example usage
+    for attribute, value in state_data.items():
+        # race_json = raceCalculation(value['drug'], value['census'])  # example usage
         #print(race_json)
         sex_json = userSexData(value['drug'], value['census'])  # example usage
         #print(sex_json)
-        age_json,array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
-        insertProbabilityToDatabase(array_obj, attribute, age_json, sex_json, race_json)
+        # age_json,array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
+        # insertProbabilityToDatabase(array_obj, attribute, age_json, sex_json, race_json)
 
-    print(age_json)
+    # print(age_json)
+    print(sex_json)
+    # print(race_json)
     print(array_obj[0])
     print(array_obj[1])
     #insertProbabilityToDatabase(array_obj,attribute,age_json,sex_json,race_json)
@@ -46,15 +50,13 @@ def storeProbability():
     return ""
 
 
-
-
 def raceCalculation(drugColVal, censusColVal):
-    race_workbook = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/POP01.xls')
+    race_workbook = xlrd.open_workbook(config_data.CENSUS_PATH+'POP01.xls')
     worksheet1 = race_workbook.sheet_by_name('POP01F')
     worksheet2 = race_workbook.sheet_by_name('POP01G')
     worksheet3 = race_workbook.sheet_by_name('POP01I')
     worksheet4 = race_workbook.sheet_by_name('POP01J')
-    race_workbook2 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/POP02.xls')
+    race_workbook2 = xlrd.open_workbook(config_data.CENSUS_PATH+'POP02.xls')
     worksheet5 = race_workbook2.sheet_by_name('POP02A')
     census_white = worksheet1.cell(censusColVal, 7).value
     census_Black_African = worksheet2.cell(censusColVal, 15).value
@@ -72,7 +74,7 @@ def raceCalculation(drugColVal, censusColVal):
     drug_Some_Other_Single_Race = 0.0
     drug_Two_Or_More_Race = 0.0
 
-    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
+    with open(config_data.DRUG_PATH, 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
 
         for row in tsvin:
@@ -92,159 +94,44 @@ def raceCalculation(drugColVal, censusColVal):
                 if row[4] == '21':
                     drug_Two_Or_More_Race = drug_Two_Or_More_Race + 1
     data = {}
-    data = {'white': {'census_data': census_white, 'drug_data': drug_white},
-        'Black_African': {'census_data': census_Black_African, 'drug_data': drug_Black_African},
-        'American_Indian_Alaska_Native': {'census_data': census_American_Indian_Alaska_Native,
-                                           'drug_data': drug_American_Indian_Alaska_Native},
-        'Asian': {'census_data': census_Asian, 'drug_data': drug_Asian},
-        'Native_Hawaiian_Pacific_Islander': {'census_data': census_Native_Hawaiian_Pacific_Islander,
-                                              'drug_data': drug_Native_Hawaiian_Pacific_Islander},
-        'Some_Other_Single_Race': {'census_data': census_Some_Other_Single_Race,
-                                    'drug_data': drug_Some_Other_Single_Race},
-        'Two_Or_More_Race': {'census_data': census_Two_Or_More_Race, 'drug_data': drug_Two_Or_More_Race}
+    data = {
+            'white': {
+                'census_data': census_white,
+                'drug_data': drug_white
+            },
+            'Black_sAfrican': {
+                'census_data': census_Black_African,
+                'drug_data': drug_Black_African
+            },
+            'American_Indian_Alaska_Native': {
+                'census_data': census_American_Indian_Alaska_Native,
+                'drug_data': drug_American_Indian_Alaska_Native
+            },
+            'Asian': {
+                'census_data': census_Asian,
+                'drug_data': drug_Asian
+            },
+            'Native_Hawaiian_Pacific_Islander': {
+                'census_data': census_Native_Hawaiian_Pacific_Islander,
+                'drug_data': drug_Native_Hawaiian_Pacific_Islander
+            },
+            'Some_Other_Single_Race': {
+                'census_data': census_Some_Other_Single_Race,
+                'drug_data': drug_Some_Other_Single_Race
+            },
+            'Two_Or_More_Race': {
+                'census_data': census_Two_Or_More_Race,
+                'drug_data': drug_Two_Or_More_Race
             }
+    }
 
     return data
-
-def userAgeData():
-    workbook = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE02.xls')
-    worksheet = workbook.sheet_by_name('Sheet5')
-    worksheet1 = workbook.sheet_by_name('Sheet7')
-    worksheet_age_02_sheet3=workbook.sheet_by_name('Sheet3')
-    census_albama_25_29 = worksheet.cell(2, 15).value
-    census_california_25_29 = worksheet.cell(192, 15).value
-    census_florida_25_29 = worksheet.cell(331, 15).value
-    census_new_york_25_29 = worksheet.cell(1863, 15).value
-    census_albama_30_34 = worksheet1.cell(2, 11).value
-    census_california_30_34 = worksheet1.cell(192, 11).value
-    census_florida_30_34 = worksheet1.cell(331, 11).value
-    census_new_york_30_34 = worksheet1.cell(1863, 11).value
-    cal_count_12_14 = 0
-    cal_count_15_17 = 0
-    cal_count_18_20 = 0
-    cal_count_21_24 = 0
-    cal_count_25_29 = 0
-    albama_count_25_29 = 0
-    ny_count_25_29 = 0
-    fl_count_25_29 = 0
-    cal_count_30_34 = 0
-    albama_count_30_34 = 0
-    ny_count_30_34 = 0
-    fl_count_30_34 = 0
-
-    cal_count = 0
-    albama_count = 0
-    ny_count = 0
-    fl_count = 0
-
-    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
-        tsvin = csv.reader(tsvin, delimiter='\t')
-        for row in tsvin:
-            if row[15] == '6' and row[2] == '2':
-                cal_count_12_14 = cal_count_12_14+1
-            if row[15] == '6' and row[2] == '3':
-                cal_count_15_17 = cal_count_15_17+1
-            if row[15] == '6' and row[2] == '4':
-                cal_count_18_20 = cal_count_18_20+1
-            if row[15] == '6' and row[2] == '5':
-                cal_count_21_24 = cal_count_21_24+1
-            if row[15] == '6' and row[2] == '6':
-                cal_count_25_29 = cal_count_25_29+1
-            if row[15] == '1' and row[2] == '6':
-                albama_count_25_29 = albama_count_25_29+1
-            if row[15] == '12' and row[2] == '6':
-                fl_count_25_29 = fl_count_25_29+1
-            if row[15] == '36' and row[2] == '6':
-                ny_count_25_29 = ny_count_25_29+1
-            if row[15] == '6' and row[2] == '7':
-                cal_count_30_34 = cal_count_30_34+1
-            if row[15] == '1' and row[2] == '7':
-                albama_count_30_34 = albama_count_30_34+1
-            if row[15] == '12' and row[2] == '7':
-                ny_count_30_34 = ny_count_30_34+1
-            if row[15] == '36' and row[2] == '7':
-                fl_count_30_34 = fl_count_30_34+1
-
-            if row[15] == '6':
-                cal_count = cal_count+1
-            if row[15] == '1':
-                albama_count = albama_count+1
-            if row[15] == '12':
-                fl_count = fl_count+1
-            if row[15] == '36':
-                ny_count = ny_count+1
-
-
-    workbook1 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE01.xls')
-    worksheet2 = workbook1.sheet_by_name('Sheet1')
-    census_albama = worksheet2.cell(2, 15).value
-    census_california = worksheet2.cell(192, 15).value
-    census_florida = worksheet2.cell(331, 15).value
-    census_new_york = worksheet2.cell(1863, 15).value
-
-    workbook_sex = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/SEX01.xls')
-    worksheet_sex_1 = workbook_sex.sheet_by_name('Sheet1')
-    census_sex_male_albama = worksheet_sex_1.cell(2, 7).value
-    census_sex_male_california = worksheet_sex_1.cell(192, 7).value
-    census_sex_male_florida = worksheet_sex_1.cell(331, 7).value
-    census_sex_male_newyork = worksheet_sex_1.cell(1863, 7).value
-    worksheet_sex_2 = workbook_sex.sheet_by_name('Sheet2')
-    census_sex_female_albama = worksheet_sex_2.cell(2, 19).value
-    census_sex_female_california = worksheet_sex_2.cell(192, 19).value
-    census_sex_female_florida = worksheet_sex_2.cell(331, 19).value
-    census_sex_female_newyork = worksheet_sex_2.cell(1863, 19).value
-
-
-
-# Sex data appended
-    cal_count_male = 0
-    albama_count_male = 0
-    ny_count_male = 0
-    fl_count_male = 0
-    cal_count_female = 0
-    albama_count_female = 0
-    ny_count_female = 0
-    fl_count_female = 0
-    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
-        tsvin = csv.reader(tsvin, delimiter='\t')
-        for row in tsvin:
-            if row[15] == '6' and row[3] == '1':
-                cal_count_male = cal_count_male + 1
-            if row[15] == '1' and row[3] == '1':
-                albama_count_male = albama_count_male + 1
-            if row[15] == '12' and row[3] == '1':
-                fl_count_male = fl_count_male + 1
-            if row[15] == '36' and row[3] == '1':
-                ny_count_male = ny_count_male + 1
-            if row[15] == '6' and row[3] == '2':
-                cal_count_female = cal_count_female + 1
-            if row[15] == '1' and row[3] == '2':
-                albama_count_female = albama_count_female + 1
-            if row[15] == '12' and row[3] == '2':
-                ny_count_female = ny_count_female + 1
-            if row[15] == '36' and row[3] == '2':
-                fl_count_female = fl_count_female + 1
-
-
-
-    # Calculate by Age distribution
-    workbook_age_01 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE01.xls')
-    worksheet_age_01_sheet7 = workbook_age_01.sheet_by_name('Sheet7')
-    worksheet_age_01_sheet9 = workbook_age_01.sheet_by_name('Sheet9')
-    census_california_10_14 = (worksheet_age_01_sheet7.cell(192, 31).value);
-    census_california_15_19 = (worksheet_age_01_sheet9.cell(192, 3).value);
-    census_california_20_24 = (worksheet_age_02_sheet3.cell(192, 35).value);
-
-
-
-
-    # return json.dumps(data);
 
 def userSexData(drugColVal, censusColVal):
     drug_male = 0.0
     drug_female = 0.0
 
-    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
+    with open(config_data.DRUG_PATH, 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
             if row[15] == str(drugColVal):
@@ -253,8 +140,7 @@ def userSexData(drugColVal, censusColVal):
                 if row[3] == '2':
                     drug_female = drug_female + 1
 
-
-    workbook_sex = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/SEX01.xls')
+    workbook_sex = xlrd.open_workbook(config_data.CENSUS_PATH + 'SEX01.xls')
     worksheet_sex_1 = workbook_sex.sheet_by_name('Sheet1')
     census_sex_male = worksheet_sex_1.cell(censusColVal, 7).value
 
@@ -286,10 +172,10 @@ def insertProbabilityToDatabase(stateCensusTotalPopulation = [],state='',age_sta
    Querries=[];
    if (bool(age_state_census)):
        probability=calculateProbabilty(age_state_census, stateCensusTotalPopulation);
-       print probability
+       print(probability)
        for items in probability:
-           print items
-           print items[0], round(float(items[2]), 2),round(float(items[1]), 2)
+           print(items)
+           print(items[0], round(float(items[2]), 2),round(float(items[1]), 2))
            Querries.append(Age(age=items[0] , age_probability=round(float(items[2]), 2), age_drug_probability=round(float(items[1]), 2) , state=state));
 
 
@@ -366,7 +252,7 @@ def getUserAgeData(drugColVal, censusColVal):
     drug_count_50_54 = 0
     drug_count_55_100 = 0
     total_drug_count = 0.0
-    with open('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/35074-0001-Data.tsv', 'r') as tsvin:
+    with open(config_data.DRUG_PATH, 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
             if row[15] == drug_column and row[2] == '2':
@@ -397,7 +283,7 @@ def getUserAgeData(drugColVal, censusColVal):
 
     ##########Drug Data End
 
-    workbook_age_01 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE01.xls')
+    workbook_age_01 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE01.xls')
     worksheet_age_01_sheet1 = workbook_age_01.sheet_by_name('Sheet1')
     worksheet_age_01_sheet7 = workbook_age_01.sheet_by_name('Sheet7')
     worksheet_age_01_sheet9 = workbook_age_01.sheet_by_name('Sheet9')
@@ -405,7 +291,7 @@ def getUserAgeData(drugColVal, censusColVal):
     census_15_19 = (worksheet_age_01_sheet9.cell(census_state_column, 3).value);
     total_census_count = worksheet_age_01_sheet1.cell(census_state_column, 15).value
 
-    workbook_age_02 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE02.xls')
+    workbook_age_02 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE02.xls')
     worksheet_age_02_sheet3 = workbook_age_02.sheet_by_name('Sheet3')
     worksheet_age_02_sheet5 = workbook_age_02.sheet_by_name('Sheet5')
     worksheet_age_02_sheet7 = workbook_age_02.sheet_by_name('Sheet7')
@@ -417,7 +303,7 @@ def getUserAgeData(drugColVal, censusColVal):
     census_35_39 = worksheet_age_02_sheet8.cell(census_state_column, 27).value
     census_40_44 = worksheet_age_02_sheet10.cell(census_state_column, 19).value
 
-    workbook_age_03 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE03.xls')
+    workbook_age_03 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE03.xls')
     worksheet_age_03_sheet1 = workbook_age_03.sheet_by_name('Sheet1')
     worksheet_age_03_sheet3 = workbook_age_03.sheet_by_name('Sheet3')
     worksheet_age_03_sheet5 = workbook_age_03.sheet_by_name('Sheet5')
@@ -429,7 +315,7 @@ def getUserAgeData(drugColVal, censusColVal):
     census_60_64 = (worksheet_age_03_sheet6.cell(census_state_column, 31).value)
     census_65_74 = (worksheet_age_03_sheet9.cell(census_state_column, 23).value)
 
-    workbook_age_04 = xlrd.open_workbook('/Users/Harshit/LECTURES/295B/Code/Master-Project/code/AGE04.xls')
+    workbook_age_04 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE04.xls')
     worksheet_age_04_sheet3 = workbook_age_03.sheet_by_name('Sheet3')
     census_75_84 = (worksheet_age_04_sheet3.cell(census_state_column, 31).value)
 

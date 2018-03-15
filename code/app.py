@@ -38,7 +38,7 @@ def storeProbability():
         sex_json = userSexData(value['drug'], value['census'])  # example usage
         #print(sex_json)
         age_json,array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
-        # insertProbabilityToDatabase(array_obj, attribute, age_json, sex_json, race_json)
+        insertProbabilityToDatabase(array_obj, attribute, age_json, sex_json, race_json)
 
     # print(age_json)
     print(sex_json)

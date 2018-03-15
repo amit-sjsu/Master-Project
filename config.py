@@ -10,7 +10,7 @@ class GetConfigDataHarshit(object):
 
 class GetConfigDataAnshul(object):
     DEBUG = False
-    DRUG_PATH = '/Users/anshul/Documents/CMPE 295B/Data'
+    DRUG_PATH = '/Users/anshul/Documents/CMPE 295B/Data/35074-0001-Data.tsv'
     CENSUS_PATH = '/Users/anshul/Documents/CMPE 295B/Data'
 
 class GetConfigDataAmit(object):

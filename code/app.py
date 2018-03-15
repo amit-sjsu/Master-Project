@@ -33,11 +33,11 @@ def storeProbability():
     # age_json = {}
     array_obj=[]
     for attribute, value in state_data.items():
-        # race_json = raceCalculation(value['drug'], value['census'])  # example usage
+        race_json = raceCalculation(value['drug'], value['census'])  # example usage
         #print(race_json)
         sex_json = userSexData(value['drug'], value['census'])  # example usage
         #print(sex_json)
-        # age_json,array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
+        age_json,array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
         # insertProbabilityToDatabase(array_obj, attribute, age_json, sex_json, race_json)
 
     # print(age_json)

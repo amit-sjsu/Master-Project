@@ -6,18 +6,21 @@ from model import db
 from model import Age
 from model import Sex
 from model import Race
+from model import State
+
 from model import CreateDB
 import config
-from config import GetConfigDataApoorva as config_data
+from config import GetConfigDataAmit as config_data
 #import simplejson as json
 from sqlalchemy.exc import IntegrityError
 import os
+from flask import request
 
 # initate flask app
 app = Flask(__name__)
 app.config.from_object(config)
-# CreateDB()
-# db.create_all()
+CreateDB()
+db.create_all()
 
 
 @app.route("/")
@@ -220,14 +223,24 @@ def calculateProbabilty(values={},stateCensusTotalPopulation=[]):
     return Matrix
 
 
-def getProbabiltyfromDatabase(personData={},State='',*args):
-    p_drug_addict=123;
+def getProbabiltyfromDatabase(personData={},*args):
+
+    Total_data=State.query.filter_by(state=personData["State"]).first();
+    print Total_data;
+    p_drug_addict=Total_data.drug_count/Total_data.census_count;
     finalProbability = p_drug_addict;
 
-    for features, values in personData.items():
-        p_drug="abc";
-        p="abc";
-        finalProbability=finalProbability * (p_drug/p);
+    if(personData["Age"]):
+        result=Age.query.filter_by(age=personData["Age"]).first()
+        finalProbability=finalProbability * (result.age_drug_probability/result.age_probability);
+
+    if (personData["Sex"]):
+        result = Sex.query.filter_by(sex=personData["Sex"]).first()
+        finalProbability = finalProbability * (result.sex_drug_probability / result.sex_probability);
+
+    if (personData["Race"]):
+        result = Race.query.filter_by(race=personData["Race"]).first()
+        finalProbability = finalProbability * (result.race_drug_probability / result.race_probability);
 
     return finalProbability
 
@@ -347,7 +360,29 @@ def getUserAgeData(drugColVal, censusColVal):
     return age_data, array_obj;
 
 
+@app.route('/')
+def index():
+    return render_template("NewIndex.html")
 
+
+@app.route('/Result', methods=['GET','POST'])
+def Result():
+    if request.method == 'POST':
+        age= request.form['age'];
+        race = request.form['race']
+        sex = request.form['sex']
+
+    person={"Age":age,
+            "Sex":sex,
+            "Race":race,
+            "State":'ALABAMA'}
+
+    print person
+
+    print getProbabiltyfromDatabase(person)
+
+
+    return render_template("analysis.html")
 
 if __name__ == '__main__':
     app.run(port=5004);

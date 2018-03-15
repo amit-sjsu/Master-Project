@@ -16,8 +16,8 @@ import os
 # initate flask app
 app = Flask(__name__)
 app.config.from_object(config)
-CreateDB()
-db.create_all()
+# CreateDB()
+# db.create_all()
 
 
 @app.route("/")
@@ -350,4 +350,4 @@ def getUserAgeData(drugColVal, censusColVal):
 
 
 if __name__ == '__main__':
-    app.run(port=5003);
+    app.run(port=5004);

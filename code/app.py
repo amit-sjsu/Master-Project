@@ -10,13 +10,13 @@ from model import State
 
 from model import CreateDB
 import config
-from config import GetConfigDataAmit as config_data
+from config import GetConfigDataAnshul as config_data
 #import simplejson as json
 from sqlalchemy.exc import IntegrityError
 import os
 from flask import request
 
-# initate flask app;
+#initate flask app;
 app = Flask(__name__)
 app.config.from_object(config)
 CreateDB()
@@ -38,13 +38,13 @@ def storeProbability():
     for attribute, value in state_data.items():
         race_json = raceCalculation(value['drug'], value['census'])  # example usage
         #print(race_json)
-        sex_json = userSexData(value['drug'], value['census'])  # example usage
+        #sex_json = userSexData(value['drug'], value['census'])  # example usage
         #print(sex_json)
-        age_json,array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
-        insertProbabilityToDatabase(array_obj, attribute, age_json, sex_json, race_json)
+        array_obj = getUserAgeData(value['drug'], value['census'])  # example usage
+        insertProbabilityToDatabase(array_obj, attribute)
 
     # print(age_json)
-    print(sex_json)
+    #print(sex_json)
     # print(race_json)
     print(array_obj[0])
     print(array_obj[1])
@@ -173,31 +173,35 @@ def insertProbabilityToDatabase(stateCensusTotalPopulation = [],state='',age_sta
    probability=[];
    k=0;
    Querries=[];
-   if (bool(age_state_census)):
-       probability=calculateProbabilty(age_state_census, stateCensusTotalPopulation);
-       print(probability)
-       for items in probability:
-           print(items)
-           print(items[0], round(float(items[2]), 2),round(float(items[1]), 2))
-           Querries.append(Age(age=items[0] , age_probability=round(float(items[2]), 2), age_drug_probability=round(float(items[1]), 2) , state=state));
+   # if (bool(age_state_census)):
+   #     probability=calculateProbabilty(age_state_census, stateCensusTotalPopulation);
+   #     print(probability)
+   #     for items in probability:
+   #         print(items)
+   #         print(items[0], round(float(items[2]), 2),round(float(items[1]), 2))
+   #         Querries.append(Age(age=items[0] , age_probability=round(float(items[2]), 2), age_drug_probability=round(float(items[1]), 2) , state=state));
+   #
+   #
+   # if (bool(sex)):
+   #     probability = calculateProbabilty(sex, stateCensusTotalPopulation);
+   #     for items in probability:
+   #         Querries.append(Sex(sex=items[0], sex_probability=round(float(items[2]), 2), sex_drug_probability=round(float(items[1]), 2), state=state));
+   #
+   #
+   #
+   # if (bool(race)):
+   #     probability = calculateProbabilty(race, stateCensusTotalPopulation);
+   #     for items in probability:
+   #         Querries.append(Race(race=items[0], race_probability=round(float(items[2]), 2), race_drug_probability=round(float(items[1]), 2), state=state));
 
-
-   if (bool(sex)):
-       probability = calculateProbabilty(sex, stateCensusTotalPopulation);
-       for items in probability:
-           Querries.append(Sex(sex=items[0], sex_probability=round(float(items[2]), 2), sex_drug_probability=round(float(items[1]), 2), state=state));
-
-
-
-   if (bool(race)):
-       probability = calculateProbabilty(race, stateCensusTotalPopulation);
-       for items in probability:
-           Querries.append(Race(race=items[0], race_probability=round(float(items[2]), 2), race_drug_probability=round(float(items[1]), 2), state=state));
-
+   Querries.append(
+       State(state=state, drug_count=stateCensusTotalPopulation[0], census_count=stateCensusTotalPopulation[1]
+           ));
 
    for querry in Querries:
        db.session.add(querry)
    db.session.commit()
+   db.session
 
 
 def calculateProbabilty(values={},stateCensusTotalPopulation=[]):
@@ -213,8 +217,11 @@ def calculateProbabilty(values={},stateCensusTotalPopulation=[]):
     # print Matrix
 
     for k, v in values.items():
-        p_drug = v["drug_data"] / stateCensusTotalPopulation[0];
-        p = v["census_data"] / stateCensusTotalPopulation[1];
+        if stateCensusTotalPopulation[0] == 0:
+            p_drug = 0.0
+        else:
+            p_drug = v["drug_data"] / float(stateCensusTotalPopulation[0]);
+        p = v["census_data"] / float(stateCensusTotalPopulation[1]);
         Matrix[i]=([k,p_drug,p]);
         i=i+1;
 
@@ -232,15 +239,24 @@ def getProbabiltyfromDatabase(personData={},*args):
 
     if(personData["Age"]):
         result=Age.query.filter_by(age=personData["Age"]).first()
-        finalProbability=finalProbability * (result.age_drug_probability/result.age_probability);
+        if result.age_drug_probability == 0 or result.age_probability ==0:
+            return 0
+        else:
+            finalProbability=finalProbability * (result.age_drug_probability/result.age_probability);
 
     if (personData["Sex"]):
         result = Sex.query.filter_by(sex=personData["Sex"]).first()
-        finalProbability = finalProbability * (result.sex_drug_probability / result.sex_probability);
+        if result.sex_drug_probability == 0 or result.sex_probability == 0:
+            return 0
+        else:
+            finalProbability = finalProbability * (result.sex_drug_probability / result.sex_probability);
 
     if (personData["Race"]):
         result = Race.query.filter_by(race=personData["Race"]).first()
-        finalProbability = finalProbability * (result.race_drug_probability / result.race_probability);
+        if result.race_drug_probability == 0 or result.race_probability == 0:
+            return 0
+        else:
+            finalProbability = finalProbability * (result.race_drug_probability / result.race_probability);
 
     return finalProbability
 
@@ -268,28 +284,28 @@ def getUserAgeData(drugColVal, censusColVal):
     with open(config_data.DRUG_PATH, 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
-            if row[15] == drug_column and row[2] == '2':
-                drug_count_12_14 = drug_count_12_14+1
-            if row[15] == drug_column and row[2] == '3':
-                drug_count_15_17 = drug_count_15_17 + 1
-            if row[15] == drug_column and row[2] == '4':
-                drug_count_18_20 = drug_count_18_20 + 1
-            if row[15] == drug_column and row[2] == '5':
-                drug_count_21_24 = drug_count_21_24 + 1
-            if row[15] == drug_column and row[2] == '6':
-                drug_count_25_29 = drug_count_25_29 + 1
-            if row[15] == drug_column and row[2] == '7':
-                drug_count_30_34 = drug_count_30_34 + 1
-            if row[15] == drug_column and row[2] == '8':
-                drug_count_35_39 = drug_count_35_39 + 1
-            if row[15] == drug_column and row[2] == '9':
-                drug_count_40_44 = drug_count_40_44 + 1
-            if row[15] == drug_column and row[2] == '10':
-                drug_count_45_49 = drug_count_45_49 + 1
-            if row[15] == drug_column and row[2] == '11':
-                drug_count_50_54 = drug_count_50_54 + 1
-            if row[15] == drug_column and row[2] == '12':
-                drug_count_55_100 = drug_count_55_100 + 1
+            # if row[15] == drug_column and row[2] == '2':
+            #     drug_count_12_14 = drug_count_12_14+1
+            # if row[15] == drug_column and row[2] == '3':
+            #     drug_count_15_17 = drug_count_15_17 + 1
+            # if row[15] == drug_column and row[2] == '4':
+            #     drug_count_18_20 = drug_count_18_20 + 1
+            # if row[15] == drug_column and row[2] == '5':
+            #     drug_count_21_24 = drug_count_21_24 + 1
+            # if row[15] == drug_column and row[2] == '6':
+            #     drug_count_25_29 = drug_count_25_29 + 1
+            # if row[15] == drug_column and row[2] == '7':
+            #     drug_count_30_34 = drug_count_30_34 + 1
+            # if row[15] == drug_column and row[2] == '8':
+            #     drug_count_35_39 = drug_count_35_39 + 1
+            # if row[15] == drug_column and row[2] == '9':
+            #     drug_count_40_44 = drug_count_40_44 + 1
+            # if row[15] == drug_column and row[2] == '10':
+            #     drug_count_45_49 = drug_count_45_49 + 1
+            # if row[15] == drug_column and row[2] == '11':
+            #     drug_count_50_54 = drug_count_50_54 + 1
+            # if row[15] == drug_column and row[2] == '12':
+            #     drug_count_55_100 = drug_count_55_100 + 1
             if row[15] == drug_column:
                 total_drug_count = total_drug_count+1
 
@@ -298,71 +314,71 @@ def getUserAgeData(drugColVal, censusColVal):
 
     workbook_age_01 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE01.xls')
     worksheet_age_01_sheet1 = workbook_age_01.sheet_by_name('Sheet1')
-    worksheet_age_01_sheet7 = workbook_age_01.sheet_by_name('Sheet7')
-    worksheet_age_01_sheet9 = workbook_age_01.sheet_by_name('Sheet9')
-    census_10_14 = (worksheet_age_01_sheet7.cell(census_state_column, 31).value);
-    census_15_19 = (worksheet_age_01_sheet9.cell(census_state_column, 3).value);
+    #worksheet_age_01_sheet7 = workbook_age_01.sheet_by_name('Sheet7')
+    #worksheet_age_01_sheet9 = workbook_age_01.sheet_by_name('Sheet9')
+    # census_10_14 = (worksheet_age_01_sheet7.cell(census_state_column, 31).value);
+    # census_15_19 = (worksheet_age_01_sheet9.cell(census_state_column, 3).value);
     total_census_count = worksheet_age_01_sheet1.cell(census_state_column, 15).value
 
-    workbook_age_02 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE02.xls')
-    worksheet_age_02_sheet3 = workbook_age_02.sheet_by_name('Sheet3')
-    worksheet_age_02_sheet5 = workbook_age_02.sheet_by_name('Sheet5')
-    worksheet_age_02_sheet7 = workbook_age_02.sheet_by_name('Sheet7')
-    worksheet_age_02_sheet8 = workbook_age_02.sheet_by_name('Sheet8')
-    worksheet_age_02_sheet10 = workbook_age_02.sheet_by_name('Sheet10')
-    census_20_24 = (worksheet_age_02_sheet3.cell(census_state_column, 35).value)
-    census_25_29 = worksheet_age_02_sheet5.cell(census_state_column, 15).value
-    census_30_34 = worksheet_age_02_sheet7.cell(census_state_column, 11).value
-    census_35_39 = worksheet_age_02_sheet8.cell(census_state_column, 27).value
-    census_40_44 = worksheet_age_02_sheet10.cell(census_state_column, 19).value
-
-    workbook_age_03 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE03.xls')
-    worksheet_age_03_sheet1 = workbook_age_03.sheet_by_name('Sheet1')
-    worksheet_age_03_sheet3 = workbook_age_03.sheet_by_name('Sheet3')
-    worksheet_age_03_sheet5 = workbook_age_03.sheet_by_name('Sheet5')
-    worksheet_age_03_sheet6 = workbook_age_03.sheet_by_name('Sheet6')
-    worksheet_age_03_sheet9 = workbook_age_03.sheet_by_name('Sheet9')
-    census_45_49 = (worksheet_age_03_sheet1.cell(census_state_column, 35).value)
-    census_50_54 = (worksheet_age_03_sheet3.cell(census_state_column, 31).value)
-    census_55_59 = (worksheet_age_03_sheet5.cell(census_state_column, 11).value)
-    census_60_64 = (worksheet_age_03_sheet6.cell(census_state_column, 31).value)
-    census_65_74 = (worksheet_age_03_sheet9.cell(census_state_column, 23).value)
-
-    workbook_age_04 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE04.xls')
-    worksheet_age_04_sheet3 = workbook_age_03.sheet_by_name('Sheet3')
-    census_75_84 = (worksheet_age_04_sheet3.cell(census_state_column, 31).value)
-
-    age_data = {}
-    age_data["12"]={"census_data": census_10_14/4,"drug_data":drug_count_12_14/3}
-    age_data["13"] = {"census_data": census_10_14 / 4, "drug_data": drug_count_12_14 / 3}
-    age_data["14"] = {"census_data": census_10_14 / 4, "drug_data": drug_count_12_14 / 3}
-    age_data["15"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_15_17 / 3}
-    age_data["16"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_15_17 / 3}
-    age_data["17"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_15_17 / 3}
-    age_data["18"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_18_20 / 3}
-    age_data["19"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_18_20 / 3}
-    age_data["20"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_18_20 / 3}
-    age_data["21"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
-    age_data["22"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
-    age_data["23"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
-    age_data["24"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
-
-    age_data["25_29"] = {"census_data": census_25_29 , "drug_data": drug_count_25_29}
-    age_data["30_34"] = {"census_data": census_30_34, "drug_data": drug_count_30_34}
-    age_data["35_39"] = {"census_data": census_35_39, "drug_data": drug_count_35_39}
-    age_data["40_44"] = {"census_data": census_40_44, "drug_data": drug_count_40_44}
-    age_data["45_49"] = {"census_data": census_45_49, "drug_data": drug_count_45_49}
-    age_data["50_54"] = {"census_data": census_50_54, "drug_data": drug_count_50_54}
-    age_data["55+"] = {"census_data": census_55_59+census_60_64+ census_65_74+census_75_84 , "drug_data": drug_count_55_100}
+    # workbook_age_02 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE02.xls')
+    # worksheet_age_02_sheet3 = workbook_age_02.sheet_by_name('Sheet3')
+    # worksheet_age_02_sheet5 = workbook_age_02.sheet_by_name('Sheet5')
+    # worksheet_age_02_sheet7 = workbook_age_02.sheet_by_name('Sheet7')
+    # worksheet_age_02_sheet8 = workbook_age_02.sheet_by_name('Sheet8')
+    # worksheet_age_02_sheet10 = workbook_age_02.sheet_by_name('Sheet10')
+    # census_20_24 = (worksheet_age_02_sheet3.cell(census_state_column, 35).value)
+    # census_25_29 = worksheet_age_02_sheet5.cell(census_state_column, 15).value
+    # census_30_34 = worksheet_age_02_sheet7.cell(census_state_column, 11).value
+    # census_35_39 = worksheet_age_02_sheet8.cell(census_state_column, 27).value
+    # census_40_44 = worksheet_age_02_sheet10.cell(census_state_column, 19).value
+    #
+    # workbook_age_03 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE03.xls')
+    # worksheet_age_03_sheet1 = workbook_age_03.sheet_by_name('Sheet1')
+    # worksheet_age_03_sheet3 = workbook_age_03.sheet_by_name('Sheet3')
+    # worksheet_age_03_sheet5 = workbook_age_03.sheet_by_name('Sheet5')
+    # worksheet_age_03_sheet6 = workbook_age_03.sheet_by_name('Sheet6')
+    # worksheet_age_03_sheet9 = workbook_age_03.sheet_by_name('Sheet9')
+    # census_45_49 = (worksheet_age_03_sheet1.cell(census_state_column, 35).value)
+    # census_50_54 = (worksheet_age_03_sheet3.cell(census_state_column, 31).value)
+    # census_55_59 = (worksheet_age_03_sheet5.cell(census_state_column, 11).value)
+    # census_60_64 = (worksheet_age_03_sheet6.cell(census_state_column, 31).value)
+    # census_65_74 = (worksheet_age_03_sheet9.cell(census_state_column, 23).value)
+    #
+    # workbook_age_04 = xlrd.open_workbook(config_data.CENSUS_PATH+'AGE04.xls')
+    # worksheet_age_04_sheet3 = workbook_age_03.sheet_by_name('Sheet3')
+    # census_75_84 = (worksheet_age_04_sheet3.cell(census_state_column, 31).value)
+    #
+    # age_data = {}
+    # age_data["12"]={"census_data": census_10_14/4,"drug_data":drug_count_12_14/3}
+    # age_data["13"] = {"census_data": census_10_14 / 4, "drug_data": drug_count_12_14 / 3}
+    # age_data["14"] = {"census_data": census_10_14 / 4, "drug_data": drug_count_12_14 / 3}
+    # age_data["15"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_15_17 / 3}
+    # age_data["16"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_15_17 / 3}
+    # age_data["17"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_15_17 / 3}
+    # age_data["18"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_18_20 / 3}
+    # age_data["19"] = {"census_data": census_15_19 / 5, "drug_data": drug_count_18_20 / 3}
+    # age_data["20"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_18_20 / 3}
+    # age_data["21"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
+    # age_data["22"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
+    # age_data["23"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
+    # age_data["24"] = {"census_data": census_20_24 / 5, "drug_data": drug_count_21_24 / 4}
+    #
+    # age_data["25_29"] = {"census_data": census_25_29 , "drug_data": drug_count_25_29}
+    # age_data["30_34"] = {"census_data": census_30_34, "drug_data": drug_count_30_34}
+    # age_data["35_39"] = {"census_data": census_35_39, "drug_data": drug_count_35_39}
+    # age_data["40_44"] = {"census_data": census_40_44, "drug_data": drug_count_40_44}
+    # age_data["45_49"] = {"census_data": census_45_49, "drug_data": drug_count_45_49}
+    # age_data["50_54"] = {"census_data": census_50_54, "drug_data": drug_count_50_54}
+    # age_data["55+"] = {"census_data": census_55_59+census_60_64+ census_65_74+census_75_84 , "drug_data": drug_count_55_100}
     array_obj = []
     array_obj.append(total_drug_count)
     array_obj.append(total_census_count)
-    return age_data, array_obj;
+    return array_obj;
 
 
-@app.route('/')
-def index():
-    return render_template("NewIndex.html")
+#@app.route('/')
+#def index():
+#    return render_template("index.html")
 
 
 @app.route('/Result', methods=['GET','POST'])
@@ -371,18 +387,19 @@ def Result():
         age= request.form['age'];
         race = request.form['race']
         sex = request.form['sex']
+        state = request.form['state']
 
     person={"Age":age,
             "Sex":sex,
             "Race":race,
-            "State":'ALABAMA'}
+            "State":state}
 
-    print person
+    print person["Age"], person
 
-    print getProbabiltyfromDatabase(person)
+    final_probability = getProbabiltyfromDatabase(person)
 
-
-    return render_template("analysis.html")
+    #return render_template("analysis.html")
+    return render_template("probability_results.html", probability=final_probability)
 
 if __name__ == '__main__':
     app.run(port=5004);

@@ -33,33 +33,130 @@
         <form action="/Result" method="post">
              <center> <label > Enter User Details</label></center>
       <hr>
-  <div class="form-group">
-
-
-    <input type="text" name="age" required class="form-control"  placeholder="Age">
-  </div>
-  <div class="form-group">
-
-    <input type="text" name="race" required class=" form-control"  placeholder="Race">
+   <div class="form-group">
+    <label for="age">Age</label>
+    <select class="form-control" name="age" id="age">
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25_29">25</option>
+        <option value="25_29">26</option>
+        <option value="25_29">27</option>
+        <option value="25_29">28</option>
+        <option value="25_29">29</option>
+        <option value="30_34">30</option>
+        <option value="30_34">31</option>
+        <option value="30_34">32</option>
+        <option value="30_34">33</option>
+        <option value="30_34">34</option>
+        <option value="35_39">35</option>
+        <option value="35_39">36</option>
+        <option value="35_39">37</option>
+        <option value="35_39">38</option>
+        <option value="35_39">39</option>
+        <option value="40_44">40</option>
+        <option value="40_44">41</option>
+        <option value="40_44">42</option>
+        <option value="40_44">43</option>
+        <option value="40_44">44</option>
+        <option value="45_49">45</option>
+        <option value="45_49">46</option>
+        <option value="45_49">47</option>
+        <option value="45_49">48</option>
+        <option value="45_49">49</option>
+        <option value="50_54">50</option>
+        <option value="50_54">51</option>
+        <option value="50_54">52</option>
+        <option value="50_54">53</option>
+        <option value="50_54">54</option>
+        <option value="55+">55+</option>
+    </select>
   </div>
    <div class="form-group">
-    <input type="text" name="sex" class="form-control"   placeholder="Sex">
+    <label for="race">Race</label>
+    <select class="form-control" name="race" id="race">
+      <option value="American_Indian_Alaska_Native">American Indian Alaska Native</option>
+      <option value="Two_Or_More_Race">Two or More Race</option>
+      <option value="Native_Hawaiian_Pacific_Islander">Native Hawaiian Pacific Islander</option>
+      <option value="Some_Other_Single_Race">Some Other Single Race</option>
+      <option value="Asian">Asian</option>
+      <option value="white">white</option>
+      <option value="Black_sAfrican">Black African</option>
+    </select>
   </div>
-             <div class="form-group">
-    <input type="text" class="form-control"   placeholder="Pregnant? Yes/No">
-  </div>
-             <div class="form-group">
-    <input type="text" class="form-control"   placeholder="Employed? Yes/No">
-  </div>
-             <div class="form-group">
-    <input type="text" class="form-control"   placeholder="Ever Arrested?">
-  </div>
-             <div class="form-group">
-    <input type="text" class="form-control"   placeholder="State">
-  </div>
-             <div class="form-group">
-    <input type="text" class="form-control"   placeholder="Living Arrangement">
-  </div>
+   <div class="form-group">
+    <label for="sex">Sex</label>
+    <select class="form-control" name="sex" id="sex">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+   </div>
+   <div class="form-group">
+    <label for="state">State</label>
+    <select class="form-control" name="state" id="state">
+        <option value="ALABAMA">Alabama</option>
+        <option value="ALASKA">Alaska</option>
+        <option value="ARIZONA">Arizona</option>
+        <option value="ARKANSAS">Arkansas</option>
+        <option value="CALIFORNIA">California</option>
+        <option value="COLORADO">Colorado</option>
+        <option value="CONNECTICUT">Connecticut</option>
+        <option value="DELAWARE">Delaware</option>
+        <option value="DISTRICT OF COLUMBIA">District of Columbia</option>
+        <option value="FLORIDA">Florida</option>
+        <option value="GEORGIA">Georgia</option>
+        <option value="HAWAII">Hawaii</option>
+        <option value="IDAHO">Idaho</option>
+        <option value="ILLINOIS">Illinois</option>
+        <option value="INDIANA">Indiana</option>
+        <option value="IOWA">Iowa</option>
+        <option value="KANSAS">Kansas</option>
+        <option value="KENTUCKY">Kentucky</option>
+        <option value="LOUISIANA">Louisiana</option>
+        <option value="MAINE">Maine</option>
+        <option value="MARYLAND">Maryland</option>
+        <option value="MASSACHUSETTS">Massachusetts</option>
+        <option value="MICHIGAN">Michigan</option>
+        <option value="MINNESOTA">Minnesota</option>
+        <option value="MISSISSIPPI">Mississippi</option>
+        <option value="MISSOURI">Missouri</option>
+        <option value="MONTANA">Montana</option>
+        <option value="NEBRASKA">Nebraska</option>
+        <option value="NEVADA">Nevada</option>
+        <option value="NEW HAMPSHIRE">New Hampshire</option>
+        <option value="NEW JERSEY">New Jersey</option>
+        <option value="NEW MEXICO">New Mexico</option>
+        <option value="NEW YORK">New York</option>
+        <option value="NORTH CAROLINA">North Carolina</option>
+        <option value="NORTH DAKOTA">North Dakota</option>
+        <option value="OHIO">Ohio</option>
+        <option value="OKLAHOMA">Oklahoma</option>
+        <option value="OREGON">Oregon</option>
+        <option value="PENNSYLVANIA">Pennsylvania</option>
+        <option value="RHODE ISLAND">Rhode Island</option>
+        <option value="SOUTH CAROLINA">South Carolina</option>
+        <option value="SOUTH DAKOTA">South Dakota</option>
+        <option value="TENNESSEE">Tennessee</option>
+        <option value="TEXAS">Texas</option>
+        <option value="UTAH">Utah</option>
+        <option value="VERMONT">Vermont</option>
+        <option value="VIRGINIA">Virginia</option>
+        <option value="WASHINGTON">Washington</option>
+        <option value="WEST VIRGINIA">West Virginia</option>
+        <option value="WISCONSIN">Wisconsin</option>
+        <option value="WYOMING">Wyoming</option>
+    </select>
+   </div>
 
   <center><button type="submit" class="btn btn-lg btn-success">Submit</button></center>
 </form>

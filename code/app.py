@@ -7,6 +7,11 @@ from model import Age
 from model import Sex
 from model import Race
 from model import State
+import numpy as np
+import pandas as pd
+from sklearn import preprocessing
+from sklearn.linear_model import LogisticRegression
+from sklearn.cross_validation import train_test_split
 
 from model import CreateDB
 import config
@@ -23,9 +28,92 @@ CreateDB()
 db.create_all()
 
 
+
+min_max_scaler = preprocessing.MinMaxScaler(feature_range=(-1,1))
+df=pd.read_csv('drugdata.csv', header=0)
+input_columns = ['AGE','GENDER','RACE','STFIPS']
+
+output_columns_alc = ["ALCFLG"]
+output_columns_mar = ["MARFLG"]
+output_columns_cok = ["COKEFLG"]
+
+X = df[input_columns].values
+X = np.array(X)
+X = min_max_scaler.fit_transform(X)
+Yalc = df[output_columns_alc].values
+Yalc = np.array(Yalc)
+Ymar = df[output_columns_mar].values
+Ymar = np.array(Ymar)
+Ycok = df[output_columns_cok].values
+Ycok = np.array(Ycok)
+
+X_train_alc,X_test_alc,Y_train_alc,Y_test_alc = train_test_split(X,Yalc,test_size=0.1)
+X_train_mar,X_test_mar,Y_train_mar,Y_test_mar = train_test_split(X,Ymar,test_size=0.1)
+X_train_cok,X_test_cok,Y_train_cok,Y_test_cok = train_test_split(X,Ycok,test_size=0.1)
+clf = LogisticRegression()
+
+
+
+
+
+
+
+
+
+
 @app.route("/")
 def index():
     return send_file("templates/index.html")
+
+
+def calculateIndividualDrug(personData={},*args):
+    age = 12
+    race = 10
+    state=5;
+    if (personData["Age"]):
+        if(personData["Age"]<=14):
+            age=2
+        elif(personData["Age"]<=17):
+            age=3
+        elif(personData["Age"] <= 20):
+            age = 4
+        elif(personData["Age"] <= 24):
+            age = 5
+        elif (personData["Age"] <= 29):
+            age = 6
+        elif (personData["Age"] <= 34):
+            age = 7
+        elif (personData["Age"] <= 39):
+            age = 8
+        elif (personData["Age"] <= 44):
+            age = 9
+        elif (personData["Age"] <= 49):
+            age = 10
+        elif (personData["Age"] <= 54):
+            age = 11
+
+    age = -1 + (((age - 1) * 2) / 11.00)
+    race = -1 + (((race + 9) * 2) / 32.00)
+    state = -1 + (((state - 1) * 2) / 54.00)
+
+    if personData["Age"] == "male":
+        sexValue = .818
+    else:
+        sexValue = 1
+
+    test1 = [[age, sexValue, race, state]]
+    clf.fit(X_train_alc, Y_train_alc)
+    alcohol= clf.predict_proba(test1)[0][0]
+    clf.fit(X_train_mar, Y_train_mar)
+    marijuana= clf.predict_proba(test1)[0][0]
+    clf.fit(X_train_cok, Y_train_cok)
+    cocaine= clf.predict_proba(test1)[0][0]
+
+    individual = {"alcohol": alcohol,
+              "marijuana": marijuana,
+              "cocaine": cocaine}
+
+    return individual
 
 @app.route('/dd')
 def storeProbability():
@@ -397,7 +485,8 @@ def Result():
     print person["Age"], person
 
     final_probability = getProbabiltyfromDatabase(person)
-
+    individual=calculateIndividualDrug(person)
+    print individual
     #return render_template("analysis.html")
     return render_template("probability_results.html", probability=final_probability)
 

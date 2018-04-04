@@ -50,9 +50,12 @@ Ycok = np.array(Ycok)
 X_train_alc,X_test_alc,Y_train_alc,Y_test_alc = train_test_split(X,Yalc,test_size=0.1)
 X_train_mar,X_test_mar,Y_train_mar,Y_test_mar = train_test_split(X,Ymar,test_size=0.1)
 X_train_cok,X_test_cok,Y_train_cok,Y_test_cok = train_test_split(X,Ycok,test_size=0.1)
-clf = LogisticRegression()
-
-
+clf1 = LogisticRegression()
+clf2 = LogisticRegression()
+clf3 = LogisticRegression()
+clf1.fit(X_train_alc, Y_train_alc)
+clf2.fit(X_train_mar, Y_train_mar)
+clf3.fit(X_train_cok, Y_train_cok)
 
 
 
@@ -69,7 +72,7 @@ def index():
 def calculateIndividualDrug(personData={},*args):
     age = 12
     race = 10
-    state=5;
+    state=personData["State"]
     if (personData["Age"]):
         if(personData["Age"]<=14):
             age=2
@@ -102,16 +105,15 @@ def calculateIndividualDrug(personData={},*args):
         sexValue = 1
 
     test1 = [[age, sexValue, race, state]]
-    clf.fit(X_train_alc, Y_train_alc)
-    alcohol= clf.predict_proba(test1)[0][0]
-    clf.fit(X_train_mar, Y_train_mar)
-    marijuana= clf.predict_proba(test1)[0][0]
-    clf.fit(X_train_cok, Y_train_cok)
-    cocaine= clf.predict_proba(test1)[0][0]
+
+    alcohol= clf1.predict_proba(test1)[0][0]
+    marijuana= clf2.predict_proba(test1)[0][0]
+    cocaine= clf3.predict_proba(test1)[0][0]
 
     individual = {"alcohol": alcohol,
               "marijuana": marijuana,
               "cocaine": cocaine}
+    print individual
 
     return individual
 
@@ -321,7 +323,7 @@ def calculateProbabilty(values={},stateCensusTotalPopulation=[]):
 def getProbabiltyfromDatabase(personData={},*args):
 
     Total_data=State.query.filter_by(state=personData["State"]).first();
-    print Total_data;
+    personData["State"]=Total_data.id;
     p_drug_addict=Total_data.drug_count/Total_data.census_count;
     finalProbability = p_drug_addict;
 
@@ -482,11 +484,11 @@ def Result():
             "Race":race,
             "State":state}
 
-    print person["Age"], person
+    #print person["Age"], person
 
     final_probability = getProbabiltyfromDatabase(person)
     individual=calculateIndividualDrug(person)
-    print individual
+    #print individual
     #return render_template("analysis.html")
     return render_template("probability_results.html", probability=final_probability)
 

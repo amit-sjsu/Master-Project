@@ -8,10 +8,10 @@ from flask_migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
 
-DATABASE = 'drug_addict'
-PASSWORD = 'password'
-USER = 'root'
-HOSTNAME = 'localhost'
+DATABASE = 'drug_addict_master_data'
+PASSWORD = 'analyticsmypassabuse'
+USER = 'analytics'
+HOSTNAME = 'analyticsdb.cwmpirdjxqbj.us-east-1.rds.amazonaws.com'
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s/%s'%(USER, PASSWORD, HOSTNAME, DATABASE)

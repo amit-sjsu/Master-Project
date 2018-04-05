@@ -1,4 +1,4 @@
-from flask import Flask, send_file, render_template
+from flask import Flask, send_file, render_template, jsonify
 import xlrd
 import csv
 import json
@@ -66,7 +66,17 @@ clf3.fit(X_train_cok, Y_train_cok)
 
 @app.route("/")
 def index():
-    return send_file("templates/index.html")
+    result = State.query.all()
+    state_json = json.load(open('state_map.json'))
+    state_data = []
+    for row in result:
+        small_json = {"hc-key": "", "value": 999}
+        small_json["hc-key"] = str("us-"+ state_json.get(row.state).get('code').lower())
+        small_json["value"] = round(float(state_json.get(row.state).get('drug'))/float(state_json.get(row.state).get('census')), 4)
+        state_data.append(small_json)
+    for row in state_data:
+        print row
+    return render_template("index.html", state_data=state_data)
 
 
 def calculateIndividualDrug(personData={},*args):
@@ -212,7 +222,72 @@ def Result():
     alcohol_probability=round(individual["alcohol"]*100, 2)
     marijuana_probability=round(individual["marijuana"]*100, 2)
 
-    return render_template("probability_results.html", probability=final_probability, cocain_probability=cocain_probability, alcohol_probability=alcohol_probability, marijuana_probability=marijuana_probability)
+    return jsonify(data={'probability': final_probability, 'cocain_probability': cocain_probability,
+                         'alcohol_probability': alcohol_probability, 'marijuana_probability': marijuana_probability});
+    # return render_template(probability=final_probability, cocain_probability=cocain_probability, alcohol_probability=alcohol_probability, marijuana_probability=marijuana_probability)
+
+
+@app.route('/stateData', methods=['GET'])
+def stateData():
+    if 'state' in request.args:
+        state_stats = getStateStatistics(request.args['state'])
+
+    return render_template("index.html", state_stats=state_stats)
+
+def getStateStatistics(state):
+    json = {"race":{}, "sex":{}, "age":{}}
+    small_json_race = {}
+    small_json_sex = {}
+    small_json_age = dict()
+    small_json_age_temp = dict()
+    age_data_temp = Age.query.filter_by(state=state).all()
+    sex_data = Sex.query.filter_by(state=state).all()
+    race_data = Race.query.filter_by(state=state).all()
+
+    temp_dict = {
+        "12": "12-14",
+        "13": "12-24",
+        "14": "12-14",
+        "15": "15-19",
+        "16": "15-19",
+        "17": "15-19",
+        "18": "15-19",
+        "19": "15-19",
+        "20": "20-24",
+        "21": "20-24",
+        "22": "20-24",
+        "23": "20-24",
+        "24": "20-24",
+        "25": "20-24",
+        "25_29": "25-29",
+        "30_34": "30-34",
+        "35_39": "35-39",
+        "40_44": "40-44",
+        "45_49": "45-49",
+        "50_54": "50-54",
+        "55+": "55+"
+    }
+
+    for row in age_data_temp:
+        age_string = str(row.age)
+        probability_value = float(row.age_drug_probability)
+        small_json_age_temp[age_string] = probability_value
+
+    for row in sex_data:
+        sex_string = str(row.sex)
+        probability_value = float(row.sex_drug_probability)
+        small_json_sex[sex_string] = probability_value
+
+    for row in race_data:
+        race_string = str(row.race)
+        probability_value = float(row.race_drug_probability)
+        small_json_race[race_string] = probability_value
+
+    json["race"] = small_json_race;
+    json["sex"] = small_json_sex;
+    json["age"] = small_json_age;
+
+    return json
 
 if __name__ == '__main__':
     app.run(port=5003);

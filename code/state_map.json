@@ -1,202 +1,252 @@
 {
     "ALABAMA": {
         "drug": 1,
-        "census": 2
+        "census": 2,
+        "code": "AL"
     },
     "ALASKA": {
         "drug": 2,
-        "census": 70
+        "census": 70,
+        "code": "AK"
     },
     "ARIZONA": {
         "drug": 4,
-        "census": 100
+        "census": 100,
+        "code": "AZ"
     },
     "ARKANSAS": {
         "drug": 5,
-        "census": 116
+        "census": 116,
+        "code": "AR"
     },
     "CALIFORNIA": {
         "drug": 6,
-        "census": 192
+        "census": 192,
+        "code": "CA"
     },
     "COLORADO": {
         "drug": 8,
-        "census": 251
+        "census": 251,
+        "code": "CO"
     },
     "CONNECTICUT": {
         "drug": 9,
-        "census": 316
+        "census": 316,
+        "code": "CT"
     },
     "DELAWARE": {
         "drug": 10,
-        "census": 325
+        "census": 325,
+        "code": "DE"
     },
     "DISTRICT OF COLUMBIA": {
         "drug": 11,
-        "census": 329
+        "census": 329,
+        "code": "DC"
     },
     "FLORIDA": {
         "drug": 12,
-        "census": 331
+        "census": 331,
+        "code": "FL"
     },
     "GEORGIA": {
         "drug": 13,
-        "census": 399
+        "census": 399,
+        "code": "GA"
     },
     "HAWAII": {
         "drug": 15,
-        "census": 559
+        "census": 559,
+        "code": "HI"
     },
     "IDAHO": {
         "drug": 16,
-        "census": 565
+        "census": 565,
+        "code": "ID"
     },
     "ILLINOIS": {
         "drug": 17,
-        "census": 610
+        "census": 610,
+        "code": "IL"
     },
     "INDIANA": {
         "drug": 18,
-        "census": 713
+        "census": 713,
+        "code": "IN"
     },
     "IOWA": {
         "drug": 19,
-        "census": 806
+        "census": 806,
+        "code": "IA"
     },
     "KANSAS": {
         "drug": 20,
-        "census": 906
+        "census": 906,
+        "code": "KS"
     },
     "KENTUCKY": {
         "drug": 21,
-        "census": 1012
+        "census": 1012,
+        "code": "KY"
     },
     "LOUISIANA": {
         "drug": 22,
-        "census": 1133
+        "census": 1133,
+        "code": "LA"
     },
     "MAINE": {
         "drug": 23,
-        "census": 1198
+        "census": 1198,
+        "code": "ME"
     },
     "MARYLAND": {
         "drug": 24,
-        "census": 1215
+        "census": 1215,
+        "code": "MD"
     },
     "MASSACHUSETTS": {
         "drug": 25,
-        "census": 1240
+        "census": 1240,
+        "code": "MA"
     },
     "MICHIGAN": {
         "drug": 26,
-        "census": 1255
+        "census": 1255,
+        "code": "MI"
     },
     "MINNESOTA": {
         "drug": 27,
-        "census": 1339
+        "census": 1339,
+        "code": "MN"
     },
     "MISSISSIPPI": {
         "drug": 28,
-        "census": 1427
+        "census": 1427,
+        "code": "MS"
     },
     "MISSOURI": {
         "drug": 29,
-        "census": 1510
+        "census": 1510,
+        "code": "MO"
     },
     "MONTANA": {
         "drug": 30,
-        "census": 1626
+        "census": 1626,
+        "code": "MT"
     },
     "NEBRASKA": {
         "drug": 31,
-        "census": 1684
+        "census": 1684,
+        "code": "NE"
     },
     "NEVADA": {
         "drug": 32,
-        "census": 1778
+        "census": 1778,
+        "code": "NV"
     },
     "NEW HAMPSHIRE": {
         "drug": 33,
-        "census": 1796
+        "census": 1796,
+        "code": "NH"
     },
     "NEW JERSEY": {
         "drug": 34,
-        "census": 1807
+        "census": 1807,
+        "code": "NJ"
     },
     "NEW MEXICO": {
         "drug": 35,
-        "census": 1829
+        "census": 1829,
+        "code": "NM"
     },
     "NEW YORK": {
         "drug": 36,
-        "census": 1863
+        "census": 1863,
+        "code": "NY"
     },
     "NORTH CAROLINA": {
         "drug": 37,
-        "census": 1926
+        "census": 1926,
+        "code": "NC"
     },
     "NORTH DAKOTA": {
         "drug": 38,
-        "census": 2027
+        "census": 2027,
+        "code": "ND"
     },
     "OHIO": {
         "drug": 39,
-        "census": 2081
+        "census": 2081,
+        "code": "OH"
     },
     "OKLAHOMA": {
         "drug": 40,
-        "census": 2170
+        "census": 2170,
+        "code": "OK"
     },
     "OREGON": {
         "drug": 41,
-        "census": 2248
+        "census": 2248,
+        "code": "OR"
     },
     "PENNSYLVANIA": {
         "drug": 42,
-        "census": 2285
+        "census": 2285,
+        "code": "PA"
     },
     "RHODE ISLAND": {
         "drug": 44,
-        "census": 2353
+        "census": 2353,
+        "code": "RI"
     },
     "SOUTH CAROLINA": {
         "drug": 45,
-        "census": 2359
+        "census": 2359,
+        "code": "SC"
     },
     "SOUTH DAKOTA": {
         "drug": 46,
-        "census": 2406
+        "census": 2406,
+        "code": "SD"
     },
     "TENNESSEE": {
         "drug": 47,
-        "census": 2473
+        "census": 2473,
+        "code": "TN"
     },
     "TEXAS": {
         "drug": 48,
-        "census": 2569
+        "census": 2569,
+        "code": "TX"
     },
     "UTAH": {
         "drug": 49,
-        "census": 2824
+        "census": 2824,
+        "code": "UT"
     },
     "VERMONT": {
         "drug": 50,
-        "census": 2854
+        "census": 2854,
+        "code": "VT"
     },
     "VIRGINIA": {
         "drug": 51,
-        "census": 2869
+        "census": 2869,
+        "code": "VA"
     },
     "WASHINGTON": {
         "drug": 53,
-        "census": 3006
+        "census": 3006,
+        "code": "WA"
     },
     "WEST VIRGINIA": {
         "drug": 54,
-        "census": 3046
+        "census": 3046,
+        "code": "WV"
     },
     "WISCONSIN": {
         "drug": 55,
-        "census": 3102
+        "census": 3102,
+        "code": "WI"
     }
 }

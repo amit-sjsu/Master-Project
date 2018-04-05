@@ -15,7 +15,7 @@ from sklearn.cross_validation import train_test_split
 
 from model import CreateDB
 import config
-from config import GetConfigDataAnshul as config_data
+from config import GetConfigDataHarshit as config_data
 #import simplejson as json
 from sqlalchemy.exc import IntegrityError
 import os
@@ -47,9 +47,9 @@ Ymar = np.array(Ymar)
 Ycok = df[output_columns_cok].values
 Ycok = np.array(Ycok)
 
-X_train_alc,X_test_alc,Y_train_alc,Y_test_alc = train_test_split(X,Yalc,test_size=0.1)
-X_train_mar,X_test_mar,Y_train_mar,Y_test_mar = train_test_split(X,Ymar,test_size=0.1)
-X_train_cok,X_test_cok,Y_train_cok,Y_test_cok = train_test_split(X,Ycok,test_size=0.1)
+X_train_alc,X_test_alc,Y_train_alc,Y_test_alc = train_test_split(X,Yalc,test_size=0.2)
+X_train_mar,X_test_mar,Y_train_mar,Y_test_mar = train_test_split(X,Ymar,test_size=0.2)
+X_train_cok,X_test_cok,Y_train_cok,Y_test_cok = train_test_split(X,Ycok,test_size=0.2)
 clf1 = LogisticRegression()
 clf2 = LogisticRegression()
 clf3 = LogisticRegression()
@@ -74,7 +74,10 @@ def calculateIndividualDrug(personData={},*args):
     race = 10
     state=personData["State"]
 
-    print (personData)
+    #print (personData)
+
+    stateMap=json.load(open('state_map.json'))
+    state=stateMap.get(state).get("drug")
 
     if (personData["Age"]):
         if(personData["Age"]=="12" or personData["Age"]=="13" or personData["Age"]=="14"):
@@ -117,35 +120,36 @@ def calculateIndividualDrug(personData={},*args):
         elif (personData["Race"] == "Black_sAfrican"):
             race = 4
 
+    print "age="
+    print age
     if personData["Sex"] == "male":
         sexValue = .818
     else:
-        sexValue = 1
+        sexValue = 1.0
 
 
-    print age
-    print race
-    print state
-    print  sexValue
+    #print age
+    #print race
+    #print  sexValue
 
 
 
-    age = -1 + (((age - 1) * 2) / 11.00)
-    race = -1 + (((race + 9) * 2) / 32.00)
-    state = -1 + (((state - 1) * 2) / 54.00)
+    age = round(-1 + (((float(age) - 2.00)*2 / 10)),2)
+    race = round(-1 + (((race + 9) * 2) / 32.00),2)
+    state = round(-1 + (((float(state) - 1) * 2) / 54.00),2)
 
 
 
     test1 = [[age, sexValue, race, state]]
-
-    alcohol= clf1.predict_proba(test1)[0][0]
-    marijuana= clf2.predict_proba(test1)[0][0]
-    cocaine= clf3.predict_proba(test1)[0][0]
+    print test1
+    alcohol= clf1.predict_proba(test1)[0][1]
+    marijuana= clf2.predict_proba(test1)[0][1]
+    cocaine= clf3.predict_proba(test1)[0][1]
 
     individual = {"alcohol": alcohol,
               "marijuana": marijuana,
               "cocaine": cocaine}
-    print individual
+    #print individual
 
     return individual
 
@@ -155,7 +159,7 @@ def calculateIndividualDrug(personData={},*args):
 def getProbabiltyfromDatabase(personData={},*args):
 
     Total_data=State.query.filter_by(state=personData["State"]).first();
-    personData["State"]=Total_data.id;
+    #personData["State"]=Total_data.id;
     p_drug_addict=Total_data.drug_count/Total_data.census_count;
     finalProbability = p_drug_addict;
 

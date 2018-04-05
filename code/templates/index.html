@@ -1,90 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Substance abuse Prediction</title>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <style>
+<html>
+<title>Drug Analytics and Prediction</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../static/css/Style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    .center_div{
-    margin: 0 auto;
-    width:70% /* value of your choice which suits your alignment */
-}
-    </style>
+<!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<!-- <script src="https://code.highcharts.com/maps/modules/data.js"></script> -->
+<!-- <script src="https://code.highcharts.com/maps/modules/drilldown.js"></script> -->
+<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+<!-- <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script> -->
+<script src="https://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/africa.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+
+<script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+
+
     <script>
-        $('form').submit(function (e) {
-  setTimeout(function() {
-    $(this).submit();
-  }, 2000);
-  e.preventDefault();
-});
-    </script>
 
-    
+        </script>
 
-</head>
-<body>
+<!-- <script src="http://code.highcharts.com/maps/highmaps.js"></script>
+<script src="http://code.highcharts.com/maps/modules/exporting.js"></script>
+<script src="http://code.highcharts.com/mapdata/countries/us/us-all.js"></script> -->
+
+<!-- <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"> -->
 
 
 
-<div class="container col-md-4 col-md-offset-4">
+
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<body class="w3-light-grey">
+
+<div>
+      <!-- Top container -->
+      <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+        <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+        <span class="w3-bar-item w3-right">Drug Analytics</span>
+      </div>
+
+
+
+      <!-- Sidebar/menu -->
+      <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:30%;margin-top: 43px;padding:10px;float: left;" id="mySidebar"><br>
+         <center><h2> Substance abuse Prediction </h2></center>
+
+
+
+     <div id ="userInputPrediction">
+
+        <div class="container" style="width: 600px; height: 190px; margin: 0 auto">
+        <div class="card" style="width: 600px; height: 180px; float: left"><center> <label > Drug Susceptibility</label></center>
+            <div class="probability"  id="container-speed"></div>
+            </div>
+        </div>
+
+        <div id="indi" class="container" style="width: 600px; height: 300px; margin: 0 auto">
+            <div class="card" style="width: 600px; height: 300px; float: left">
+
+
+        <div id= "alcohol_probability" class="skillbar clearfix ">
+          <div class="skillbar-title" style="background: #2980b9;"><span>Alcohol</span></div>
+          <div class="skillbar-bar" style="background: #3498db;"></div>
+        </div> <!-- End Skill Bar -->
+
+        <div id="marijuana_probability" class="skillbar clearfix ">
+          <div class="skillbar-title" style="background: #2c3e50;"><span>Marijuana</span></div>
+          <div class="skillbar-bar" style="background: #2c3e50;"></div>
+        </div> <!-- End Skill Bar -->
+
+        <div id= "cocain_probability" class="skillbar clearfix ">
+          <div class="skillbar-title" style="background: #46465e;"><span>Cocain</span></div>
+          <div class="skillbar-bar" style="background: #5a68a5;"></div>
+        </div> <!-- End Skill Bar -->
+            </div>
+        </div>
+
+       </div>
+
+
+
+
+
+
+
+
+
+
+
+      <div class="col-md-8 col-md-offset-2">
     <br>
     <br>
     <br>
-        <form action="/Result" method="post">
+    <div id ="individualSubstancePrediction">
+
              <center> <label > Enter User Details</label></center>
       <hr>
    <div class="form-group">
-    <label for="age">Age</label>
-    <select class="form-control" name="age" id="age">
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="14">14</option>
-        <option value="15">15</option>
-        <option value="16">16</option>
-        <option value="17">17</option>
-        <option value="18">18</option>
-        <option value="19">19</option>
-        <option value="20">20</option>
-        <option value="21">21</option>
-        <option value="22" selected>22</option>
-        <option value="23">23</option>
-        <option value="24">24</option>
-        <option value="25_29">25</option>
-        <option value="25_29">26</option>
-        <option value="25_29">27</option>
-        <option value="25_29">28</option>
-        <option value="25_29">29</option>
-        <option value="30_34">30</option>
-        <option value="30_34">31</option>
-        <option value="30_34">32</option>
-        <option value="30_34">33</option>
-        <option value="30_34">34</option>
-        <option value="35_39">35</option>
-        <option value="35_39">36</option>
-        <option value="35_39">37</option>
-        <option value="35_39">38</option>
-        <option value="35_39">39</option>
-        <option value="40_44">40</option>
-        <option value="40_44">41</option>
-        <option value="40_44">42</option>
-        <option value="40_44">43</option>
-        <option value="40_44">44</option>
-        <option value="45_49">45</option>
-        <option value="45_49">46</option>
-        <option value="45_49">47</option>
-        <option value="45_49">48</option>
-        <option value="45_49">49</option>
-        <option value="50_54">50</option>
-        <option value="50_54">51</option>
-        <option value="50_54">52</option>
-        <option value="50_54">53</option>
-        <option value="50_54">54</option>
-        <option value="55+">55+</option>
-    </select>
-  </div>
+      <label for="age">Age</label>
+      <select class="form-control" name="age" id="age">
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+          <option value="21">21</option>
+          <option value="22">22</option>
+          <option value="23">23</option>
+          <option value="24">24</option>
+          <option value="25_29">25</option>
+          <option value="25_29">26</option>
+          <option value="25_29">27</option>
+          <option value="25_29">28</option>
+          <option value="25_29">29</option>
+          <option value="30_34">30</option>
+          <option value="30_34">31</option>
+          <option value="30_34">32</option>
+          <option value="30_34">33</option>
+          <option value="30_34">34</option>
+          <option value="35_39">35</option>
+          <option value="35_39">36</option>
+          <option value="35_39">37</option>
+          <option value="35_39">38</option>
+          <option value="35_39">39</option>
+          <option value="40_44">40</option>
+          <option value="40_44">41</option>
+          <option value="40_44">42</option>
+          <option value="40_44">43</option>
+          <option value="40_44">44</option>
+          <option value="45_49">45</option>
+          <option value="45_49">46</option>
+          <option value="45_49">47</option>
+          <option value="45_49">48</option>
+          <option value="45_49">49</option>
+          <option value="50_54">50</option>
+          <option value="50_54">51</option>
+          <option value="50_54">52</option>
+          <option value="50_54">53</option>
+          <option value="50_54">54</option>
+          <option value="55+">55+</option>
+      </select>
+   </div>
    <div class="form-group">
     <label for="race">Race</label>
     <select class="form-control" name="race" id="race">
@@ -93,8 +165,8 @@
       <option value="Native_Hawaiian_Pacific_Islander">Native Hawaiian Pacific Islander</option>
       <option value="Some_Other_Single_Race">Some Other Single Race</option>
       <option value="Asian">Asian</option>
-      <option value="white" selected>white</option>
-      <option value="Black_sAfrican" >Black African</option>
+      <option value="white">white</option>
+      <option value="Black_sAfrican">Black African</option>
     </select>
   </div>
    <div class="form-group">
@@ -139,7 +211,7 @@
         <option value="NEW HAMPSHIRE">New Hampshire</option>
         <option value="NEW JERSEY">New Jersey</option>
         <option value="NEW MEXICO">New Mexico</option>
-        <option value="NEW YORK" selected="selected">New York</option>
+        <option value="NEW YORK">New York</option>
         <option value="NORTH CAROLINA">North Carolina</option>
         <option value="NORTH DAKOTA">North Dakota</option>
         <option value="OHIO">Ohio</option>
@@ -161,11 +233,83 @@
     </select>
    </div>
 
-  <center><button type="submit" class="btn btn-lg btn-success">Submit</button></center>
-</form>
+  <!-- <center><button type="submit" class="btn btn-lg btn-success">Submit</button></center> -->
+    <center><button id="submit"  class="btn btn-lg btn-success" onclick="extendSidePane()" >Submit</button></center>
+
+</div>
+ <center><button id="back" class="btn btn-lg btn-success" onclick="backToOriginalShape()" style="margin-bottom:5px;">Back</button></center>
 
 
 </div>
+
+
+         <!-- <button class="btn btn-success " onclick="extendSidePane()" >Expand Graph</button> -->
+         <!-- <button class="btn btn-success " onclick="backToOriginalShape()" style="margin-bottom:5px; ">Close Graph</button> -->
+      </nav>
+
+
+      <!-- Overlay effect when opening sidebar on small screens -->
+      <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+      <!-- !PAGE CONTENT! -->
+      <div  id ="myMainContainer" class="w3-main" style="width:70%;float: right;margin-top:43px;">
+
+            <div id = "MapView" style="padding:0.01em 16px">
+              <div>
+                <div >
+                 <!-- <div id="Container" style="height: 600px; width:100%; margin: 0 auto"></div> -->
+                  <div id="countryContainer" style="height: 600px; width:100%; margin: 0 auto"></div>
+                  <div id="stateContainer" style="height: 600px; width:100%; padding: 10px;">
+                      <h3 id = "description">Califoria State Drug Analytics</h3>
+                      <button class="btn btn-success backButton" onclick="backToUSMap()" style="margin-bottom:5px; ">Back to US MAP</button>
+                      <div class="tab" id="tabNavigation" >
+                        <button class="tablinks" id ="initialTab" onclick="openGraph(event, 'Age')">Age</button>
+                        <button class="tablinks" onclick="openGraph(event, 'Sex')">Sex</button>
+                        <button class="tablinks" onclick="openGraph(event, 'Race')">Race</button>
+                        <button class="tablinks" onclick="openGraph(event, 'Other')">Other</button>
+                      </div>
+
+                      <div id="Age" class="tabcontent " style="height: 350px; width:100%; float: left;" >
+                        <h3>Age</h3>
+                      </div>
+
+                      <div id="Sex" class="tabcontent" style="height: 350px; width:100%; float: left;" >
+                        <h3>Sex</h3>
+                      </div>
+
+                      <div id="Race" class="tabcontent" style="height: 350px; width:100%; float: left;">
+                        <h3>Race</h3>
+                      </div>
+                      <div id="Other" class="tabcontent" style="height: 350px; width:100%; float: left;">
+                        <h3>Other</h3>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Footer -->
+           <!--  <footer class="w3-container w3-padding-16 w3-light-grey">
+              <h4>FOOTER</h4>
+            </footer> -->
+        <!-- End page content -->
+      </div>
+
+  </div>
+
+
+
+
+
+
+ <!-- <script src="USMap.js"></script> -->
+ <script src="../static/js/NewUsMap.js"></script>
+ <script src="../static/js/age_chart.js"></script>
+ <script src="../static/js/sex_chart.js"></script>
+ <script src="../static/js/race_chart.js"></script>
+<!-- <script src="../static/js/individualPrediction.js"></script> -->
+ <script src="../static/js/configuration.js"></script>
 
 </body>
 </html>

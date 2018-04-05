@@ -61,22 +61,27 @@ clf3.fit(X_train_cok, Y_train_cok)
 
 
 
-
-
-
 @app.route("/")
 def index():
+    return render_template("index.html")
+
+
+@app.route("/getUsData")
+def getusadata():
     result = State.query.all()
     state_json = json.load(open('state_map.json'))
-    state_data = []
+    state_data = [{
+        "hc-key": "us-wy",
+        "value": 0
+    }]
     for row in result:
         small_json = {"hc-key": "", "value": 999}
         small_json["hc-key"] = str("us-"+ state_json.get(row.state).get('code').lower())
-        small_json["value"] = round(float(state_json.get(row.state).get('drug'))/float(state_json.get(row.state).get('census')), 4)
+        small_json["value"] = 100*round(float(state_json.get(row.state).get('drug'))/float(state_json.get(row.state).get('census')), 4)
         state_data.append(small_json)
     for row in state_data:
         print row
-    return render_template("index.html", state_data=state_data)
+    return jsonify( state_data=state_data);
 
 
 def calculateIndividualDrug(personData={},*args):
@@ -230,17 +235,16 @@ def Result():
 @app.route('/stateData', methods=['GET'])
 def stateData():
     if 'state' in request.args:
-        state_stats = getStateStatistics(request.args['state'])
-
-    return render_template("index.html", state_stats=state_stats)
+        state_stats = getStateStatistics(str(request.args['state']))
+    return jsonify(state_stats=state_stats);
 
 def getStateStatistics(state):
     json = {"race":{}, "sex":{}, "age":{}}
     small_json_race = {}
     small_json_sex = {}
     small_json_age = dict()
-    small_json_age_temp = dict()
-    age_data_temp = Age.query.filter_by(state=state).all()
+    small_json_age = dict()
+    age_data = Age.query.filter_by(state=state).all()
     sex_data = Sex.query.filter_by(state=state).all()
     race_data = Race.query.filter_by(state=state).all()
 
@@ -268,10 +272,10 @@ def getStateStatistics(state):
         "55+": "55+"
     }
 
-    for row in age_data_temp:
+    for row in age_data:
         age_string = str(row.age)
         probability_value = float(row.age_drug_probability)
-        small_json_age_temp[age_string] = probability_value
+        small_json_age[age_string] = probability_value
 
     for row in sex_data:
         sex_string = str(row.sex)

@@ -73,36 +73,68 @@ def calculateIndividualDrug(personData={},*args):
     age = 12
     race = 10
     state=personData["State"]
+
+    print (personData)
+
     if (personData["Age"]):
-        if(personData["Age"]<=14):
+        if(personData["Age"]=="12" or personData["Age"]=="13" or personData["Age"]=="14"):
             age=2
-        elif(personData["Age"]<=17):
+        elif(personData["Age"]=="15" or personData["Age"]=="16" or personData["Age"]=="17"):
             age=3
-        elif(personData["Age"] <= 20):
+        elif(personData["Age"]=="18" or personData["Age"]=="19" or personData["Age"]=="20"):
             age = 4
-        elif(personData["Age"] <= 24):
+        elif(personData["Age"]=="21" or personData["Age"]=="22" or personData["Age"]=="23" or personData["Age"]=="24"):
             age = 5
-        elif (personData["Age"] <= 29):
+        elif (personData["Age"] =="25_29"):
             age = 6
-        elif (personData["Age"] <= 34):
+        elif (personData["Age"] =="30_34"):
             age = 7
-        elif (personData["Age"] <= 39):
+        elif (personData["Age"] =="35_39"):
             age = 8
-        elif (personData["Age"] <= 44):
+        elif (personData["Age"] =="40_44"):
             age = 9
-        elif (personData["Age"] <= 49):
+        elif (personData["Age"] =="45_49"):
             age = 10
-        elif (personData["Age"] <= 54):
+        elif (personData["Age"] =="50_54"):
             age = 11
+        elif (personData["Age"] == "55+"):
+            age = 12
+
+
+    if (personData["Race"]):
+        if(personData["Race"]=="American_Indian_Alaska_Native"):
+            race=2
+        elif(personData["Race"]=="Asian"):
+            race=13
+        elif(personData["Race"] =="Two_Or_More_Race"):
+            race = 21
+        elif(personData["Race"] =="Native_Hawaiian_Pacific_Islander"):
+            race = 23
+        elif (personData["Race"] =="Some_Other_Single_Race"):
+            race = 20
+        elif (personData["Race"] =="white"):
+            race = 5
+        elif (personData["Race"] == "Black_sAfrican"):
+            race = 4
+
+    if personData["Sex"] == "male":
+        sexValue = .818
+    else:
+        sexValue = 1
+
+
+    print age
+    print race
+    print state
+    print  sexValue
+
+
 
     age = -1 + (((age - 1) * 2) / 11.00)
     race = -1 + (((race + 9) * 2) / 32.00)
     state = -1 + (((state - 1) * 2) / 54.00)
 
-    if personData["Age"] == "male":
-        sexValue = .818
-    else:
-        sexValue = 1
+
 
     test1 = [[age, sexValue, race, state]]
 
@@ -329,6 +361,7 @@ def getProbabiltyfromDatabase(personData={},*args):
 
     if(personData["Age"]):
         result=Age.query.filter_by(age=personData["Age"]).first()
+        print (result)
         if result.age_drug_probability == 0 or result.age_probability ==0:
             return 0
         else:
@@ -485,7 +518,6 @@ def Result():
             "State":state}
 
     #print person["Age"], person
-
     final_probability = getProbabiltyfromDatabase(person)
     individual=calculateIndividualDrug(person)
     #print individual

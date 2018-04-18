@@ -64,6 +64,8 @@ function extendSidePane(){
    var state = e.options[e.selectedIndex].value;
 
 
+
+
       var data = {
         age : age,
         sex : sex,
@@ -100,7 +102,7 @@ var rounded = +(Math.round(probability_percentage + "e+2")  + "e-2")
 
                //chartTest( alcohol_probability);
 
-
+  displayUserRelatedStateData(age,sex,race,state);
             },
             error: function(error) {
                 console.log(error);
@@ -123,18 +125,27 @@ var rounded = +(Math.round(probability_percentage + "e+2")  + "e-2")
    setTimeout(function(){ resizeChart(1); }, 1000);
 
 
+}
 
 
 
+
+function displayUserRelatedStateData(age,sex,race,state){
+
+    pushToSide(state);
 
 
 }
+
+
+
 
 function pushToSide(val){
 
   	document.getElementById("countryContainer").style.display = "none";
  	document.getElementById("stateContainer").style.display="block";
  	document.getElementById("stateContainer").style.backgroundColor = "white";
+    document.getElementById("description").innerHTML=val + " State Drug Analytics"
 
   	// document.getElementById("tabNavigation").style.display="block";
   	// document.getElementById("description").style.display="block";

@@ -1,3 +1,5 @@
+var chartAge;
+
 function age(data){
 
 
@@ -14,7 +16,7 @@ for (var i = 0; i<all_keys.length; i++) {
     };
 }
 
-var chartAge = new Highcharts.chart('Age', {
+chartAge = new Highcharts.chart('Age', {
     chart: {
         type: 'column'
         // events:{

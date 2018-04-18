@@ -1,4 +1,6 @@
 
+var chartSex;
+
 function sex(data) {
 
     var data = data;
@@ -14,7 +16,7 @@ for (var i = 0; i<all_keys.length; i++) {
     };
 }
 
-var chartSex= new Highcharts.chart('Sex', {
+chartSex= new Highcharts.chart('Sex', {
     chart: {
         type: 'column'
     },

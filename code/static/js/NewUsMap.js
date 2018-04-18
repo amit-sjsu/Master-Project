@@ -1,5 +1,5 @@
 
-
+    var chart ;
     var data ;
 
        $.ajax({
@@ -9,7 +9,7 @@
 
               data=response.state_data;
                // Initiate the chart
-           var chart = new Highcharts.mapChart('countryContainer', {
+              chart = new Highcharts.mapChart('countryContainer', {
 
                 chart: {
                         type: 'map',

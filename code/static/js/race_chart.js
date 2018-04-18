@@ -1,3 +1,6 @@
+var chartRace;
+
+
 function race(data){
 
 
@@ -14,7 +17,7 @@ for (var i = 0; i<all_keys.length; i++) {
     };
 }
 
-var chartRace= new Highcharts.chart('Race', {
+chartRace= new Highcharts.chart('Race', {
     chart: {
         type: 'column'
     },

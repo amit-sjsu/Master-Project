@@ -374,12 +374,23 @@ p{
 
 .probability{
 	width: 580px;
-    height: 120px;
+    height: 80px;
     margin-left: 5px;
     float: left;
     text-align: center;
     vertical-align: center;
-    padding-top: 40px;
+    padding-top: 10px;
     font-size: 5rem;
     color: orange;
+}
+
+.insideprobability{
+	width: 580px;
+    margin-left: 5px;
+    float: left;
+    text-align: center;
+    vertical-align: center;
+    padding-top: 5px;
+    font-size: 2rem;
+    color: lightseagreen;
 }

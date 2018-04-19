@@ -87,6 +87,9 @@ var rounded = +(Math.round(probability_percentage + "e+2")  + "e-2")
                 document.getElementById("alcohol_probability").setAttribute("data-percent", response.data.alcohol_probability + "%");
                 document.getElementById("marijuana_probability").setAttribute("data-percent", response.data.marijuana_probability + "%");
                 document.getElementById("cocain_probability").setAttribute("data-percent", response.data.cocain_probability + "%");
+                document.getElementById("alcohol_percent").innerHTML = response.data.alcohol_probability + "%"
+                document.getElementById("marijuana_percent").innerHTML = response.data.marijuana_probability + "%"
+                document.getElementById("cocain_percent").innerHTML = response.data.cocain_probability + "%"
 
 
 
@@ -98,7 +101,11 @@ var rounded = +(Math.round(probability_percentage + "e+2")  + "e-2")
                         width:jQuery(this).attr('data-percent')
                     },2000);
                 });
+                var chances = Math.round(rounded / 0.00561196927)
+
                 document.getElementById("container-speed").innerHTML = rounded + "%";
+                document.getElementById("inside-probability").innerHTML = "Your chances are "+ chances+ " times the national average";
+
 
                //chartTest( alcohol_probability);
 

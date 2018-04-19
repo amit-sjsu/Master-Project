@@ -29,7 +29,7 @@ chartAge = new Highcharts.chart('Age', {
         text: 'Probability '
     },
     subtitle: {
-        text: 'Source: WorldClimate.com'
+        text: ''
     },
     xAxis: {
         type: 'category',

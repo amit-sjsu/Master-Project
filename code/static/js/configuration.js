@@ -101,10 +101,31 @@ var rounded = +(Math.round(probability_percentage + "e+2")  + "e-2")
                         width:jQuery(this).attr('data-percent')
                     },2000);
                 });
-                var chances = Math.round(rounded / 0.00561196927)
+
+                if(rounded>0.561196927){
+                 var chances = Math.round(rounded / 0.561196927)
+                    if(chances==1){
+document.               getElementById("inside-probability").innerHTML = "Your chances is equal the national average";
+                    }else{
+                        document.getElementById("inside-probability").innerHTML = "Your chances are "+ chances+ " times more than the national average";
+                    //alert(rounded);
+                    }
+
+                }else{
+                     var chances = Math.round(0.561196927 / rounded)
+                    if(chances==1){
+document.               getElementById("inside-probability").innerHTML = "Your chances is equal the national average";
+                    }else {
+
+                        document.getElementById("inside-probability").innerHTML = "Your chances are " + chances + " times less than the national average";
+                    }
+                }
+
+               // document.getElementById("alcoholNAText").innerHTML = "Your chances are times less than the national average";
+
 
                 document.getElementById("container-speed").innerHTML = rounded + "%";
-                document.getElementById("inside-probability").innerHTML = "Your chances are "+ chances+ " times the national average";
+               // document.getElementById("inside-probability").innerHTML = "Your chances are "+ chances+ " times the national average";
 
 
                //chartTest( alcohol_probability);

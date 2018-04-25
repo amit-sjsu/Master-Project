@@ -91,9 +91,6 @@ var rounded = +(Math.round(probability_percentage + "e+2")  + "e-2")
                 document.getElementById("marijuana_percent").innerHTML = response.data.marijuana_probability + "%"
                 document.getElementById("cocain_percent").innerHTML = response.data.cocain_probability + "%"
 
-
-
-
                 // $('#elementId').append("<div id= 'alcohol_probability' class='skillbar clearfix' data-percent='"+response.data.alcohol_probability+"%'> <div class='skillbar-title' style='background: #2980b9;'><span>Alcohol</span></div> <div class='skillbar-bar' style='background: #3498db;'></div> </div>");
 
               jQuery('.skillbar').each(function(){
@@ -120,8 +117,38 @@ document.               getElementById("inside-probability").innerHTML = "Your c
                         document.getElementById("inside-probability").innerHTML = "Your chances are " + chances + " times less than the national average";
                     }
                 }
+//Alcohol===100379600/1,732,741=57.9311 
+// Cokane=39188200/1,732,741=22.6163 
+// Marijuana=67727000/1,732,741=69.0866
+                var alcProb=response.data.alcohol_probability
+                var marProb=response.data.marijuana_probability
+                var cokProb=response.data.cocain_probability
+                if(alcProb>57.93){
+                    var chancesAlc = Math.round((alcProb-57.9311)/57.9311*100)
+                    document.getElementById("alcoholNAText").innerHTML = "Your chances are "+chancesAlc+" % more than the national average";
+                }else{
+                    var chancesAlc = Math.round((57.9311-alcProb)/alcProb*100)
+                   document.getElementById("alcoholNAText").innerHTML = "Your chances are "+chancesAlc+" % less than the national average";
+                }
 
-               // document.getElementById("alcoholNAText").innerHTML = "Your chances are times less than the national average";
+                if(marProb>22.6163 ){
+                    var chancesMar = Math.round((marProb-22.6163 )/22.6163 *100)
+                    document.getElementById("marijuanaNAText").innerHTML = "Your chances are "+chancesMar+" % more than the national average";
+                }else{
+                    var chancesMar = Math.round((22.6163 -marProb)/marProb*100)
+                    document.getElementById("marijuanaNAText").innerHTML = "Your chances are "+chancesMar+" % less than the national average";
+                }
+
+                if(cokProb>69.0866){
+                    var chancesCok = Math.round((cokProb-69.0866)/69.0866*100)
+                    document.getElementById("cokainNAText").innerHTML = "Your chances are "+chancesCok+" % more than the national average";
+                }else{
+                    var chancesCok = Math.round((69.0866-cokProb)/cokProb*100)
+                    document.getElementById("cokainNAText").innerHTML = "Your chances are "+chancesCok+" % less than the national average";
+                }
+
+
+
 
 
                 document.getElementById("container-speed").innerHTML = rounded + "%";

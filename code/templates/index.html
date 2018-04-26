@@ -41,6 +41,24 @@
 
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+
+.tooltiptext-aclohol {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.skillbar-bar:hover .tooltiptext-aclohol {
+    visibility: visible;
+}
 </style>
 <body class="w3-light-grey">
 
@@ -72,21 +90,23 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
             <div class="card" style="width: 600px; height: 300px; float: left">
 
 
-        <div id= "alcohol_probability" class="skillbar clearfix ">
+        <div id= "alcohol_probability" class="skillbar clearfix alcohol_tooltip">
           <div class="skillbar-title" style="background: #2980b9;"><span>Alcohol</span></div>
-          <div class="skillbar-bar" style="background: #3498db;"></div>
+            <div class="skillbar-bar" style="background: #3498db;"><span class="tooltiptext-aclohol"><label id="alcoholNAText"/></span></div>
             <div class="skill-bar-percent" id="alcohol_percent"></div>
+
         </div> <!-- End Skill Bar -->
+
 
         <div id="marijuana_probability" class="skillbar clearfix ">
           <div class="skillbar-title" style="background: #2c3e50;"><span>Marijuana</span></div>
-          <div class="skillbar-bar"  style="background: #2c3e50;"></div>
+          <div class="skillbar-bar"  style="background: #2c3e50;"><span class="tooltiptext-aclohol"><label id="marijuanaNAText"/></span></div>
             <div class="skill-bar-percent" id="marijuana_percent"></div>
         </div> <!-- End Skill Bar -->
 
         <div id= "cocain_probability" class="skillbar clearfix ">
           <div class="skillbar-title" style="background: #46465e;"><span>Cocain</span></div>
-          <div class="skillbar-bar" style="background: #5a68a5;"></div>
+          <div class="skillbar-bar" style="background: #5a68a5;"><span class="tooltiptext-aclohol"><label id="cokainNAText"/></span></div>
             <div class="skill-bar-percent" id="cocain_percent"></div>
         </div> <!-- End Skill Bar -->
 

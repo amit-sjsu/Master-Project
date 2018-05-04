@@ -24,7 +24,7 @@ chartSex= new Highcharts.chart('Sex', {
         text: 'Probability '
     },
     subtitle: {
-        text: 'Source: WorldClimate.com'
+        text: ''
     },
     xAxis: {
         type: 'category',

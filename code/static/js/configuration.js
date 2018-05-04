@@ -200,7 +200,7 @@ function pushToSide(val){
   	document.getElementById("countryContainer").style.display = "none";
  	document.getElementById("stateContainer").style.display="block";
  	document.getElementById("stateContainer").style.backgroundColor = "white";
-    document.getElementById("description").innerHTML=val + " State Drug Analytics"
+    document.getElementById("description").innerHTML=val + " State Drug Analytics";
 
   	// document.getElementById("tabNavigation").style.display="block";
   	// document.getElementById("description").style.display="block";

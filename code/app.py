@@ -77,7 +77,8 @@ def getusadata():
     for row in result:
         small_json = {"hc-key": "", "value": 999}
         small_json["hc-key"] = str("us-"+ state_json.get(row.state).get('code').lower())
-        small_json["value"] = 100*round(float(state_json.get(row.state).get('drug'))/float(state_json.get(row.state).get('census')), 4)
+        print row.drug_count
+        small_json["value"] = round((100*round(float(row.drug_count)/float(row.census_count), 4)),4)
         state_data.append(small_json)
     for row in state_data:
         print row

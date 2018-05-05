@@ -62,7 +62,134 @@ function extendSidePane(){
 
    e = document.getElementById("state");
    var state = e.options[e.selectedIndex].value;
+   avatar_img = document.getElementById("avatar")
+   var topType = "ShortHairShortFlat"
+   var accessoriesType = "Default"
+   var hairColor = "BrownDark"
+   var facialHairType = "Blank"
+   var facialHairColor = "BrownDark"
+   var clotheType = "BlazerShirt"
+   var eyebrowType = "Default"
+   var mouthType = "Smile"
+   var skinColor = "Light"
+    if(sex == "male") {
+       if(age >= 12 && age <= 18){
+           topType = "ShortHairDreads02"
+           accessoriesType = "Kurt"
+           clotheType = "GraphicShirt"
+       }
+       else if(age >= 19 && age <= 24){
+           topType = "ShortHairShortFlat"
+           accessoriesType = "Prescription02"
+           facialHairType = "BeardLight"
+           clotheType = "BlazerShirt"
+           if (state == "TEXAS") {
+               facialHairType = "MoustacheFancy"
+               topType = "Hat"
+           }
+       }
+       else if(age == "25_29"){
+           topType = "ShortHairShortFlat"
+           accessoriesType = "Prescription02"
+           facialHairType = "BeardLight"
+           clotheType = "BlazerShirt"
+           if (state == "TEXAS") {
+               facialHairType = "MoustacheFancy"
+               topType = "Hat"
+           }
+       }
+       else if(age == "30_34" || age == "35_39"){
+           topType = "ShortHairShortWaved"
+           accessoriesType = "Prescription01"
+           clotheType = "BlazerSweater"
+           facialHairType = "BeardMedium"
+           facialHairColor = "Auburn"
+           hairColor = "Auburn"
+           if (race == "Black_sAfrican") {
+               facialHairColor = "Black"
+               hairColor = "Black"
+            }
 
+       }
+       else if(age == "40_44" || age == "45_49" || age == "50_54"){
+           topType = "ShortHairSides"
+           accessoriesType = "Prescription02"
+           facialHairType = "BeardMedium"
+           facialHairColor = "Auburn"
+           hairColor = "Auburn"
+           clotheType = "CollarSweater"
+           if (race == "Black_sAfrican") {
+               facialHairColor = "Black"
+               hairColor = "Black"
+            }
+       }
+       else if(age == "55+"){
+           topType = "ShortHairSides"
+           accessoriesType = "Round"
+           facialHairType = "BeardMedium"
+           facialHairColor = "Platinum"
+           hairColor = "SilverGray"
+           clotheType = "ShirtCrewNeck"
+       }
+    }
+
+    if(sex == "female") {
+       if(age >= 12 && age <= 18){
+           topType = "LongHairCurvy"
+           accessoriesType = "Kurt"
+           clotheType = "GraphicShirt"
+       }
+       else if(age >= 19 && age <= 24){
+           topType = "LongHairFroBand"
+           accessoriesType = "Prescription02"
+           clotheType = "Overall"
+           if (state == "FLORIDA") {
+               topType = "LongHairFrida"
+               clotheType = "GraphicShirt"
+           }
+       }
+       else if(age == "25_29"){
+           topType = "LongHairFroBand"
+           accessoriesType = "Prescription02"
+           clotheType = "Overall"
+           if (state == "FLORIDA") {
+               topType = "LongHairFrida"
+               clotheType = "GraphicShirt"
+           }
+       }
+       else if(age == "30_34" || age == "35_39"){
+           topType = "LongHairStraightStrand"
+           accessoriesType = "Prescription02"
+           clotheType = "BlazerShirt"
+           hairColor = "BrownDark"
+
+       }
+       else if(age == "40_44" || age == "45_49" || age == "50_54"){
+           topType = "LongHairBigHair"
+           accessoriesType = "Prescription02"
+           hairColor = "Platinum"
+           clotheType = "CollarSweater"
+       }
+       else if(age == "55+"){
+           topType = "LongHairCurly"
+           accessoriesType = "Prescription01"
+           hairColor = "SilverGray"
+           clotheType = "Overall"
+           mouthType = "Twinkle"
+       }
+    }
+    if(race == "American_Indian_Alaska_Native"){
+       skinColor = "Tanned"
+    }
+    else if (race == "white") {
+       skinColor = "Pale"
+    }
+    else if (race == "Black_sAfrican") {
+       skinColor = "DarkBrown"
+    }
+
+
+   avatar_img.src = "https://avataaars.io/?avatarStyle=Circle&topType="+topType+"&accessoriesType="+accessoriesType+"&hairColor="+hairColor+"&facialHairType="+facialHairType+"&facialHairColor="+facialHairColor+"&clotheType="+clotheType+"&clotheColor=Heather&graphicType=Hola&eyeType=Default&eyebrowType="+eyebrowType+"&mouthType="+mouthType+"&skinColor="+skinColor
 
 
 
@@ -81,8 +208,8 @@ function extendSidePane(){
 
                 alcohol_probability= response.data.probability;
                 var raw_probability = alcohol_probability
-var probability_percentage = raw_probability * 100
-var rounded = +(Math.round(probability_percentage + "e+2")  + "e-2")
+                var probability_percentage = raw_probability * 100
+                var rounded = +(Math.round(probability_percentage + "e+2")  + "e-2")
 
                 document.getElementById("alcohol_probability").setAttribute("data-percent", response.data.alcohol_probability + "%");
                 document.getElementById("marijuana_probability").setAttribute("data-percent", response.data.marijuana_probability + "%");

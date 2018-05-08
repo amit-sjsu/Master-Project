@@ -16,6 +16,7 @@ HOSTNAME = 'analyticsdb.cwmpirdjxqbj.us-east-1.rds.amazonaws.com'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s/%s'%(USER, PASSWORD, HOSTNAME, DATABASE)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_POOL_TIMEOUT']=600;
 db = SQLAlchemy(app)
 migrate_obj = Migrate(app, db)
 manager_obj = Manager(app)

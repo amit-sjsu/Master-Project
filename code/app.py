@@ -82,7 +82,8 @@ def getusadata():
         state_data.append(small_json)
     for row in state_data:
         print row
-    return jsonify( state_data=state_data);
+    db.session.close()
+    return jsonify(state_data=state_data);
 
 
 def calculateIndividualDrug(personData={},*args):
@@ -200,7 +201,7 @@ def getProbabiltyfromDatabase(personData={},*args):
             return 0
         else:
             finalProbability = finalProbability * (result.race_drug_probability / result.race_probability);
-
+    db.session.close()
     return finalProbability
 
 
@@ -291,7 +292,7 @@ def getStateStatistics(state):
     json["race"] = small_json_race;
     json["sex"] = small_json_sex;
     json["age"] = small_json_age;
-
+    db.session.close()
     return json
 
 if __name__ == '__main__':

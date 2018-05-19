@@ -226,24 +226,36 @@ function extendSidePane(){
                     },2000);
                 });
 
-                if(rounded>0.561196927){
+//                 if(rounded>0.561196927){
+//                  var chances = Math.round(rounded / 0.561196927)
+//                     if(chances==1){
+// document.               getElementById("inside-probability").innerHTML = "Your chances is equal the national average";
+//                     }else{
+//                         document.getElementById("inside-probability").innerHTML = "Your chances are "+ chances+ " times more than the national average";
+//                     //alert(rounded);
+//                     }
+//
+//                 }else{
+//                      var chances = Math.round(0.561196927 / rounded)
+//                     if(chances==1){
+// document.               getElementById("inside-probability").innerHTML = "Your chances is equal the national average";
+//                     }else {
+//
+//                         document.getElementById("inside-probability").innerHTML = "Your chances are " + chances + " times less than the national average";
+//                     }
+//                 }
+
                  var chances = Math.round(rounded / 0.561196927)
                     if(chances==1){
 document.               getElementById("inside-probability").innerHTML = "Your chances is equal the national average";
                     }else{
-                        document.getElementById("inside-probability").innerHTML = "Your chances are "+ chances+ " times more than the national average";
-                    //alert(rounded);
+                        document.getElementById("inside-probability").innerHTML = "Your chances are "+ chances+ " times of national average";
                     }
 
-                }else{
-                     var chances = Math.round(0.561196927 / rounded)
-                    if(chances==1){
-document.               getElementById("inside-probability").innerHTML = "Your chances is equal the national average";
-                    }else {
 
-                        document.getElementById("inside-probability").innerHTML = "Your chances are " + chances + " times less than the national average";
-                    }
-                }
+
+
+
 //Alcohol===100379600/1,732,741=57.9311 
 // Cokane=39188200/1,732,741=22.6163 
 // Marijuana=67727000/1,732,741=69.0866

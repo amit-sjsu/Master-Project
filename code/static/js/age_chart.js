@@ -45,7 +45,7 @@ chartAge = new Highcharts.chart('Age', {
             borderWidth: 0,
             dataLabels: {
                 enabled: true,
-                format: '{point.y:.1f}%'
+                format: '{point.y:.2f}%'
             }
         }
     },

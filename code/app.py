@@ -184,21 +184,21 @@ def getProbabiltyfromDatabase(personData={},*args):
         result=Age.query.filter_by(age=personData["Age"]).first()
         print (result)
         if result.age_drug_probability == 0 or result.age_probability ==0:
-            return 0
+            return 0.0001
         else:
             finalProbability=finalProbability * (result.age_drug_probability/result.age_probability);
 
     if (personData["Sex"]):
         result = Sex.query.filter_by(sex=personData["Sex"]).first()
         if result.sex_drug_probability == 0 or result.sex_probability == 0:
-            return 0
+            return 0.0001
         else:
             finalProbability = finalProbability * (result.sex_drug_probability / result.sex_probability);
 
     if (personData["Race"]):
         result = Race.query.filter_by(race=personData["Race"]).first()
         if result.race_drug_probability == 0 or result.race_probability == 0:
-            return 0
+            return 0.0001
         else:
             finalProbability = finalProbability * (result.race_drug_probability / result.race_probability);
     db.session.close()
